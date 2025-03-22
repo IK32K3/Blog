@@ -5,14 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Blog Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <script type="module" src="Blog-Admin/src/main.js"></script>
+  <!-- Use CDN links for reliable loading on GitHub Pages -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS with relative path -->
+  <link href="../assets/css/style.css" rel="stylesheet">
 </head>
 <body>
   <!-- Header -->
-  <div data-inject="Blog-Admin/src/components/header.html"></div>
+  <div data-inject="../components/header.html"></div>
 
   <!-- Sidebar -->
-  <div data-inject="Blog-Admin/src/components/sidebar.html"></div>
+  <div data-inject="../components/sidebar.html"></div>
 
   <!-- Main Content -->
   <main id="main" class="main">
@@ -20,7 +24,7 @@
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -261,6 +265,81 @@
   </main>
 
   <!-- Footer -->
-  <div data-inject="Blog-Admin/src/components/footer.html"></div>
+  <div data-inject="../components/footer.html"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  <script>
+    // Component loader - simplified version for GitHub Pages
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load components
+      const components = document.querySelectorAll('[data-inject]');
+      
+      components.forEach(component => {
+        let path = component.getAttribute('data-inject');
+        
+        fetch(path)
+          .then(response => response.text())
+          .then(html => {
+            component.innerHTML = html;
+          })
+          .catch(error => {
+            console.error('Error loading component:', path, error);
+            component.innerHTML = `<div class="alert alert-danger">Failed to load component: ${path}</div>`;
+          });
+      });
+
+      // Initialize charts
+      initializeCharts();
+    });
+
+    function initializeCharts() {
+      const postsChartCanvas = document.getElementById('postsChart');
+      if (postsChartCanvas) {
+        const postsChart = new Chart(postsChartCanvas, {
+          type: 'line',
+          data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+              label: 'Posts',
+              data: [65, 59, 80, 81, 56, 55, 40, 47, 52, 58, 62, 68],
+              fill: false,
+              borderColor: '#4154f1',
+              tension: 0.1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      const categoryChartCanvas = document.getElementById('categoryChart');
+      if (categoryChartCanvas) {
+        const categoryChart = new Chart(categoryChartCanvas, {
+          type: 'doughnut',
+          data: {
+            labels: ['Technology', 'Travel', 'Food', 'Health', 'Others'],
+            datasets: [{
+              data: [35, 25, 20, 15, 5],
+              backgroundColor: [
+                '#4154f1',
+                '#2eca6a',
+                '#ff771d',
+                '#ffbf00',
+                '#999999'
+              ],
+              hoverOffset: 4
+            }]
+          }
+        });
+      }
+    }
+  </script>
 </body>
 </html>

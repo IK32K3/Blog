@@ -1,9 +1,15 @@
+// vite.config.js - modified for GitHub Pages deployment
 import { defineConfig } from 'vite';
 import injectHTML from 'vite-plugin-html-inject';
 import { resolve } from 'path';
 
+// Set the base path for GitHub Pages
+// This should match your repository name: /Blog/
+const basePath = '/Blog/';
+
 export default defineConfig({
   plugins: [injectHTML()],
+  base: basePath, // This is crucial for GitHub Pages
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -14,6 +20,7 @@ export default defineConfig({
     open: '/src/pages/dashboard.html'
   },
   build: {
+    outDir: 'dist', // Output to dist folder
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/pages/dashboard.html'),
