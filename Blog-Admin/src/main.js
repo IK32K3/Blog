@@ -1,28 +1,39 @@
-// Import Bootstrap CSS and JS
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-// Import our custom CSS
 import './assets/css/style.css';
 
-// Import our custom JS
 import './assets/js/script.js';
 
-// Component loader
+const getBaseUrl = () => {
+  const currentUrl = window.location.href;
+  if (currentUrl.includes('github.io')) {
+    return '/Blog/Blog-Admin/';
+  }
+  return '/';
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Load components
+  const baseUrl = getBaseUrl();
+  
   const components = document.querySelectorAll('[data-inject]');
   
   components.forEach(component => {
-    const path = component.getAttribute('data-inject');
+    let path = component.getAttribute('data-inject');
+    
+    if (!path.startsWith('http') && !path.startsWith(baseUrl)) {
+      if (path.startsWith('/')) {
+        path = path.substring(1);
+      }
+      path = baseUrl + path;
+    }
     
     fetch(path)
       .then(response => response.text())
       .then(html => {
         component.innerHTML = html;
-        
-        // Re-initialize scripts that might be in the loaded component
+
         const scripts = component.querySelectorAll('script');
         scripts.forEach(script => {
           const newScript = document.createElement('script');
@@ -39,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  // Initialize tooltips
   const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
   tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
