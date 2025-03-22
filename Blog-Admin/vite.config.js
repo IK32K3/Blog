@@ -11,12 +11,12 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    open: '/src/pages/dashboard.html'
   },
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        dashboard: resolve(__dirname, 'src/pages/dashboard.html'),
+        main: resolve(__dirname, 'src/pages/dashboard.html'),
         userList: resolve(__dirname, 'src/pages/users/index.html'),
         postList: resolve(__dirname, 'src/pages/posts/index.html'),
         categoryList: resolve(__dirname, 'src/pages/categories/index.html'),
