@@ -50,11 +50,6 @@
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab" aria-controls="comments" aria-selected="false">
-                    Comments
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
                   <button class="nav-link" id="seo-tab" data-bs-toggle="tab" data-bs-target="#seo" type="button" role="tab" aria-controls="seo" aria-selected="false">
                     SEO
                   </button>
@@ -255,61 +250,6 @@
                         <option value="show_default" selected>Show default language content if translation not available</option>
                         <option value="hide_content">Hide content when translation not available</option>
                         <option value="show_notice">Show untranslated notice when translation not available</option>
-                      </select>
-                    </div>
-                    
-                    <div class="col-12">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                  </form>
-                </div>
-                
-                <!-- Comments Settings -->
-                <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
-                  <form class="row g-3">
-                    <div class="col-md-6">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="enableComments" checked>
-                        <label class="form-check-label" for="enableComments">Enable comments on new posts</label>
-                      </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="moderateComments" checked>
-                        <label class="form-check-label" for="moderateComments">Comments must be manually approved</label>
-                      </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="commentNotification" checked>
-                        <label class="form-check-label" for="commentNotification">Email notification for new comments</label>
-                      </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="allowNested" checked>
-                        <label class="form-check-label" for="allowNested">Allow nested comments (replies)</label>
-                      </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                      <label for="closeComments" class="form-label">Automatically close comments</label>
-                      <select class="form-select" id="closeComments">
-                        <option value="never" selected>Never</option>
-                        <option value="30">After 30 days</option>
-                        <option value="60">After 60 days</option>
-                        <option value="90">After 90 days</option>
-                      </select>
-                    </div>
-                    
-                    <div class="col-md-6">
-                      <label for="commentOrder" class="form-label">Comment Display Order</label>
-                      <select class="form-select" id="commentOrder">
-                        <option value="newest" selected>Newest first</option>
-                        <option value="oldest">Oldest first</option>
                       </select>
                     </div>
                     
