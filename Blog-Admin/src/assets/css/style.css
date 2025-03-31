@@ -308,3 +308,156 @@ main {
 .dropdown-menu {
   z-index: 1000;
 }
+
+/* Profile Card Styles */
+.profile-card {
+  text-align: center;
+}
+
+.profile-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 6px solid #fff;
+  box-shadow: 0 0 20px rgba(65, 84, 241, 0.2);
+}
+
+.profile-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 10px 0 0 0;
+}
+
+.profile-card h3 {
+  font-size: 16px;
+  font-weight: 400;
+  color: #6c757d;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: #f6f9ff;
+  border-radius: 50%;
+  color: #4154f1;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background-color: #4154f1;
+  color: #fff;
+}
+
+/* Profile Tab Content */
+.profile-overview .row {
+  margin-bottom: 20px;
+}
+
+.profile-overview .label {
+  font-weight: 600;
+  color: rgba(1, 41, 112, 0.6);
+}
+
+/* Activity Timeline */
+.activity {
+  padding: 20px 0;
+}
+
+.activity .activity-item {
+  position: relative;
+  padding-left: 45px;
+  margin-bottom: 20px;
+}
+
+.activity .activity-item:last-child {
+  margin-bottom: 0;
+}
+
+.activity .activity-item .activity-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6c757d;
+  width: 45px;
+}
+
+.activity .activity-item .activity-badge {
+  position: absolute;
+  left: 32px;
+  top: 6px;
+  z-index: 1;
+  font-size: 10px;
+}
+
+.activity .activity-item .activity-content {
+  position: relative;
+  padding-bottom: 20px;
+  border-left: 2px solid #ebeef4;
+  padding-left: 23px;
+}
+
+.activity .activity-item .activity-content::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid;
+  background: #fff;
+}
+
+.activity .activity-item:last-child .activity-content {
+  padding-bottom: 0;
+}
+
+/* Media Gallery */
+.card .img-fluid {
+  height: 80px;
+  object-fit: cover;
+}
+
+/* Form Styles */
+.tab-pane form .row {
+  margin-bottom: 15px;
+}
+
+.tab-pane form label {
+  font-weight: 600;
+}
+
+/* Responsive fixes */
+@media (max-width: 991px) {
+  .profile-card {
+    margin-bottom: 30px;
+  }
+
+  .profile-overview .label {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-edit .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .col-form-label {
+    margin-bottom: 5px;
+  }
+}
