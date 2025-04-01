@@ -513,75 +513,110 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Component loader
-    document.addEventListener('DOMContentLoaded', () => {
-      // Load components
-      const components = document.querySelectorAll('[data-inject]');
-      
-      components.forEach(component => {
-        let path = component.getAttribute('data-inject');
-        
-        fetch(path)
-          .then(response => response.text())
-          .then(html => {
-            component.innerHTML = html;
-          })
-          .catch(error => {
-            console.error('Error loading component:', path, error);
-            component.innerHTML = `<div class="alert alert-danger">Failed to load component: ${path}</div>`;
-          });
-      });
+    // This should replace the script section at the bottom of profile.html
 
-      // Initialize the profile page
-      initializeProfilePage();
+// Component loader
+document.addEventListener('DOMContentLoaded', () => {
+  // Load components
+  const components = document.querySelectorAll('[data-inject]');
+  
+  components.forEach(component => {
+    let path = component.getAttribute('data-inject');
+    
+    fetch(path)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to load component: ${path}`);
+        }
+        return response.text();
+      })
+      .then(html => {
+        component.innerHTML = html;
+      })
+      .catch(error => {
+        console.error('Error loading component:', path, error);
+        component.innerHTML = `<div class="alert alert-danger">Failed to load component: ${path}</div>`;
+      });
+  });
+
+  // Initialize the profile page after a short delay to ensure components are loaded
+  setTimeout(() => {
+    initializeProfilePage();
+  }, 300);
+});
+
+// Initialize profile page based on view mode
+function initializeProfilePage() {
+  try {
+    // Get user ID from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+    
+    // Check if viewing own profile or someone else's
+    // This is a simplified check - in a real app, you'd compare with the logged-in user's ID
+    const isOwnProfile = !userId || userId === 'self';
+    
+    // Set view mode
+    document.body.classList.toggle('viewing-own-profile', isOwnProfile);
+    
+    // Show/hide elements based on view mode
+    const selfOnlyElements = document.querySelectorAll('.view-only-self');
+    selfOnlyElements.forEach(element => {
+      element.style.display = isOwnProfile ? '' : 'none';
     });
-
-    // Initialize profile page based on view mode
-    function initializeProfilePage() {
-      // Get user ID from URL parameter
-      const urlParams = new URLSearchParams(window.location.search);
-      const userId = urlParams.get('id');
-      
-      // Check if viewing own profile or someone else's
-      // This is a simplified check - in a real app, you'd compare with the logged-in user's ID
-      const isOwnProfile = !userId || userId === 'self';
-      
-      // Set view mode
-      document.body.classList.toggle('viewing-own-profile', isOwnProfile);
-      
-      // Show/hide elements based on view mode
-      const selfOnlyElements = document.querySelectorAll('.view-only-self');
-      selfOnlyElements.forEach(element => {
-        element.style.display = isOwnProfile ? '' : 'none';
-      });
-      
-      // If email is shown in other view mode, hide it specially
-      if (!isOwnProfile) {
-        const emailRow = document.querySelector('.row:has(#infoEmail)');
-        if (emailRow) emailRow.style.display = 'none';
-      }
-      
-      // If not viewing own profile, load the other user's data
-      if (!isOwnProfile) {
-        loadUserData(userId);
-      } else {
-        // Load current user's data
-        loadUserData('self');
-      }
-      
-      // Set up form submission handlers
-      setupFormHandlers();
+    
+    // If email is shown in other view mode, hide it specially
+    if (!isOwnProfile) {
+      const emailRow = document.querySelector('.row:has(#infoEmail)');
+      if (emailRow) emailRow.style.display = 'none';
     }
     
-   // Load user data from the server
-async function loadUserData(userId) {
+    // Load user data
+    loadUserData(userId || 'self');
+    
+    // Set up form submission handlers
+    setupFormHandlers();
+  } catch (error) {
+    console.error('Error initializing profile:', error);
+    showNotification('Error initializing profile. Please try again.', 'danger');
+  }
+}
+
+// Load user data
+function loadUserData(userId) {
   try {
+    // Define default user data (for fallback)
+    const defaultUserData = {
+      id: 1,
+      username: 'johndoe',
+      fullName: 'John Doe',
+      email: 'john.doe@example.com',
+      role: 'Administrator',
+      roleId: 1,
+      description: 'John Doe is an experienced content creator with expertise in technology and SEO optimization.',
+      isActive: true,
+      joinedDate: '2023-01-15',
+      lastLogin: '2023-11-05 14:30:24',
+      profileImage: 'https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff',
+      social: {
+        twitter: 'https://twitter.com/johndoe',
+        facebook: 'https://facebook.com/johndoe',
+        instagram: 'https://instagram.com/johndoe',
+        linkedin: 'https://linkedin.com/in/johndoe'
+      },
+      stats: {
+        posts: 42,
+        comments: 156,
+        translations: 24,
+        views: 7392
+      }
+    };
+    
     // This is where you would make an API call to get the user data
     // For demo purposes, we're using hardcoded data
-    
     let userData;
     
-    if (userId === 'self') {
+    if (userId === 'self' || userId === '1') {
       userData = {
         id: 1,
         username: 'johndoe',
@@ -660,19 +695,19 @@ async function loadUserData(userId) {
         }
       };
     } else {
-      // Default or not found
-      throw new Error('User not found');
+      // Use default data if user not found
+      userData = defaultUserData;
     }
     
     // Update the UI with the user data
     updateProfileUI(userData);
     
     // If own profile, also populate the form fields
-    if (userId === 'self') {
+    if (userId === 'self' || userId === '1') {
       populateFormFields(userData);
     }
     
-    // Load user posts (would be a separate API call in a real app)
+    // Load user posts
     loadUserPosts(userId);
     
   } catch (error) {
@@ -683,73 +718,133 @@ async function loadUserData(userId) {
 
 // Update the profile UI with user data
 function updateProfileUI(userData) {
-  // Update profile card
-  document.getElementById('profileImage').src = userData.profileImage;
-  document.getElementById('profileName').textContent = userData.fullName;
-  document.getElementById('profileRole').textContent = userData.role;
-  
-  // Update profile overview
-  document.getElementById('profileDescription').textContent = userData.description;
-  document.getElementById('infoUsername').textContent = userData.username;
-  document.getElementById('infoFullName').textContent = userData.fullName;
-  document.getElementById('infoEmail').textContent = userData.email;
-  document.getElementById('infoRole').textContent = userData.role;
-  
-  // Update status badge
-  const statusBadge = document.getElementById('infoStatus').querySelector('span') || document.createElement('span');
-  statusBadge.className = `badge ${userData.isActive ? 'bg-success' : 'bg-danger'}`;
-  statusBadge.textContent = userData.isActive ? 'Active' : 'Inactive';
-  document.getElementById('infoStatus').innerHTML = '';
-  document.getElementById('infoStatus').appendChild(statusBadge);
-  
-  // Update dates
-  document.getElementById('infoJoinedDate').textContent = userData.joinedDate;
-  if (document.getElementById('infoLastLogin')) {
-    document.getElementById('infoLastLogin').textContent = userData.lastLogin;
+  try {
+    // Update profile card
+    if (document.getElementById('profileImage')) {
+      document.getElementById('profileImage').src = userData.profileImage;
+    }
+    if (document.getElementById('profileName')) {
+      document.getElementById('profileName').textContent = userData.fullName;
+    }
+    if (document.getElementById('profileRole')) {
+      document.getElementById('profileRole').textContent = userData.role;
+    }
+    
+    // Update profile overview
+    if (document.getElementById('profileDescription')) {
+      document.getElementById('profileDescription').textContent = userData.description;
+    }
+    if (document.getElementById('infoUsername')) {
+      document.getElementById('infoUsername').textContent = userData.username;
+    }
+    if (document.getElementById('infoFullName')) {
+      document.getElementById('infoFullName').textContent = userData.fullName;
+    }
+    if (document.getElementById('infoEmail')) {
+      document.getElementById('infoEmail').textContent = userData.email;
+    }
+    if (document.getElementById('infoRole')) {
+      document.getElementById('infoRole').textContent = userData.role;
+    }
+    
+    // Update status badge
+    if (document.getElementById('infoStatus')) {
+      const statusBadge = document.getElementById('infoStatus').querySelector('span') || document.createElement('span');
+      statusBadge.className = `badge ${userData.isActive ? 'bg-success' : 'bg-danger'}`;
+      statusBadge.textContent = userData.isActive ? 'Active' : 'Inactive';
+      document.getElementById('infoStatus').innerHTML = '';
+      document.getElementById('infoStatus').appendChild(statusBadge);
+    }
+    
+    // Update dates
+    if (document.getElementById('infoJoinedDate')) {
+      document.getElementById('infoJoinedDate').textContent = userData.joinedDate;
+    }
+    if (document.getElementById('infoLastLogin')) {
+      document.getElementById('infoLastLogin').textContent = userData.lastLogin;
+    }
+    
+    // Update statistics
+    if (document.getElementById('postCount')) {
+      document.getElementById('postCount').textContent = userData.stats.posts;
+    }
+    if (document.getElementById('commentCount')) {
+      document.getElementById('commentCount').textContent = userData.stats.comments;
+    }
+    if (document.getElementById('translationCount')) {
+      document.getElementById('translationCount').textContent = userData.stats.translations;
+    }
+    if (document.getElementById('viewCount')) {
+      document.getElementById('viewCount').textContent = userData.stats.views.toLocaleString();
+    }
+    
+    // Update social links
+    updateSocialLinks(userData.social);
+  } catch (error) {
+    console.error('Error updating profile UI:', error);
   }
-  
-  // Update statistics
-  document.getElementById('postCount').textContent = userData.stats.posts;
-  document.getElementById('commentCount').textContent = userData.stats.comments;
-  document.getElementById('translationCount').textContent = userData.stats.translations;
-  document.getElementById('viewCount').textContent = userData.stats.views.toLocaleString();
-  
-  // Update social links
-  updateSocialLinks(userData.social);
 }
 
 // Update social links
 function updateSocialLinks(social) {
-  const links = document.querySelectorAll('.social-links a');
-  if (links.length >= 4) {
-    links[0].href = social.twitter || '#';
-    links[1].href = social.facebook || '#';
-    links[2].href = social.instagram || '#';
-    links[3].href = social.linkedin || '#';
+  try {
+    const links = document.querySelectorAll('.social-links a');
+    if (links.length >= 4) {
+      links[0].href = social.twitter || '#';
+      links[1].href = social.facebook || '#';
+      links[2].href = social.instagram || '#';
+      links[3].href = social.linkedin || '#';
+    }
+  } catch (error) {
+    console.error('Error updating social links:', error);
   }
 }
 
 // Populate form fields for editing
 function populateFormFields(userData) {
-  // Profile edit form
-  document.getElementById('editProfileImage').src = userData.profileImage;
-  document.getElementById('editUsername').value = userData.username;
-  document.getElementById('editFullName').value = userData.fullName;
-  document.getElementById('editEmail').value = userData.email;
-  document.getElementById('editDescription').value = userData.description;
-  
-  // Social media inputs
-  document.getElementById('editTwitter').value = userData.social.twitter || '';
-  document.getElementById('editFacebook').value = userData.social.facebook || '';
-  document.getElementById('editInstagram').value = userData.social.instagram || '';
-  document.getElementById('editLinkedin').value = userData.social.linkedin || '';
-  
-  // Settings form
-  document.getElementById('isActive').checked = userData.isActive;
+  try {
+    // Profile edit form
+    if (document.getElementById('editProfileImage')) {
+      document.getElementById('editProfileImage').src = userData.profileImage;
+    }
+    if (document.getElementById('editUsername')) {
+      document.getElementById('editUsername').value = userData.username;
+    }
+    if (document.getElementById('editFullName')) {
+      document.getElementById('editFullName').value = userData.fullName;
+    }
+    if (document.getElementById('editEmail')) {
+      document.getElementById('editEmail').value = userData.email;
+    }
+    if (document.getElementById('editDescription')) {
+      document.getElementById('editDescription').value = userData.description;
+    }
+    
+    // Social media inputs
+    if (document.getElementById('editTwitter')) {
+      document.getElementById('editTwitter').value = userData.social.twitter || '';
+    }
+    if (document.getElementById('editFacebook')) {
+      document.getElementById('editFacebook').value = userData.social.facebook || '';
+    }
+    if (document.getElementById('editInstagram')) {
+      document.getElementById('editInstagram').value = userData.social.instagram || '';
+    }
+    if (document.getElementById('editLinkedin')) {
+      document.getElementById('editLinkedin').value = userData.social.linkedin || '';
+    }
+    
+    // Settings form
+    if (document.getElementById('isActive')) {
+      document.getElementById('isActive').checked = userData.isActive;
+    }
+  } catch (error) {
+    console.error('Error populating form fields:', error);
+  }
 }
 
 // Load user posts
-async function loadUserPosts(userId) {
+function loadUserPosts(userId) {
   try {
     // In a real app, you would make an API call to get the user's posts
     // For demo purposes, we're using hardcoded data
@@ -802,67 +897,74 @@ async function loadUserPosts(userId) {
     
   } catch (error) {
     console.error('Error loading user posts:', error);
-    showNotification('Error loading posts data. Please try again.', 'danger');
   }
 }
 
 // Update posts table
 function updatePostsTable(postsData) {
-  const tableBody = document.getElementById('userPostsList');
-  if (!tableBody) return;
-  
-  // Clear existing rows
-  tableBody.innerHTML = '';
-  
-  // Add new rows
-  postsData.forEach(post => {
-    const row = document.createElement('tr');
+  try {
+    const tableBody = document.getElementById('userPostsList');
+    if (!tableBody) return;
     
-    row.innerHTML = `
-      <td><a href="#" class="text-primary fw-bold">${post.title}</a></td>
-      <td>${post.category}</td>
-      <td>${post.language}</td>
-      <td>${post.date}</td>
-      <td><span class="badge ${post.status === 'Published' ? 'bg-success' : 'bg-warning text-dark'}">${post.status}</span></td>
-      <td>${post.views.toLocaleString()}</td>
-    `;
+    // Clear existing rows
+    tableBody.innerHTML = '';
     
-    tableBody.appendChild(row);
-  });
+    // Add new rows
+    postsData.forEach(post => {
+      const row = document.createElement('tr');
+      
+      row.innerHTML = `
+        <td><a href="#" class="text-primary fw-bold">${post.title}</a></td>
+        <td>${post.category}</td>
+        <td>${post.language}</td>
+        <td>${post.date}</td>
+        <td><span class="badge ${post.status === 'Published' ? 'bg-success' : 'bg-warning text-dark'}">${post.status}</span></td>
+        <td>${post.views.toLocaleString()}</td>
+      `;
+      
+      tableBody.appendChild(row);
+    });
+  } catch (error) {
+    console.error('Error updating posts table:', error);
+  }
 }
 
 // Set up form submission handlers
 function setupFormHandlers() {
-  // Edit profile form
-  const editProfileForm = document.getElementById('editProfileForm');
-  if (editProfileForm) {
-    editProfileForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      saveProfile();
-    });
-  }
-  
-  // Settings form
-  const settingsForm = document.getElementById('settingsForm');
-  if (settingsForm) {
-    settingsForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      saveSettings();
-    });
-  }
-  
-  // Change password form
-  const passwordForm = document.getElementById('changePasswordForm');
-  if (passwordForm) {
-    passwordForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      changePassword();
-    });
+  try {
+    // Edit profile form
+    const editProfileForm = document.getElementById('editProfileForm');
+    if (editProfileForm) {
+      editProfileForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveProfile();
+      });
+    }
+    
+    // Settings form
+    const settingsForm = document.getElementById('settingsForm');
+    if (settingsForm) {
+      settingsForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveSettings();
+      });
+    }
+    
+    // Change password form
+    const passwordForm = document.getElementById('changePasswordForm');
+    if (passwordForm) {
+      passwordForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        changePassword();
+      });
+    }
+  } catch (error) {
+    console.error('Error setting up form handlers:', error);
   }
 }
 
 // Save profile changes
-async function saveProfile() {
+function saveProfile() {
   try {
     // Get form data
     const formData = {
@@ -884,10 +986,29 @@ async function saveProfile() {
     // Show success message
     showNotification('Profile updated successfully!', 'success');
     
-    // Reload user data to reflect changes
-    setTimeout(() => {
-      loadUserData('self');
-    }, 1000);
+    // Update the profile view to reflect changes
+    const userData = {
+      id: 1,
+      username: formData.username,
+      fullName: formData.fullName,
+      email: formData.email,
+      role: 'Administrator',
+      roleId: 1,
+      description: formData.description,
+      isActive: true,
+      joinedDate: '2023-01-15',
+      lastLogin: '2023-11-05 14:30:24',
+      profileImage: document.getElementById('editProfileImage').src,
+      social: formData.social,
+      stats: {
+        posts: 42,
+        comments: 156,
+        translations: 24,
+        views: 7392
+      }
+    };
+    
+    updateProfileUI(userData);
     
   } catch (error) {
     console.error('Error saving profile:', error);
@@ -896,7 +1017,7 @@ async function saveProfile() {
 }
 
 // Save settings
-async function saveSettings() {
+function saveSettings() {
   try {
     // Get form data
     const formData = {
@@ -924,7 +1045,7 @@ async function saveSettings() {
 }
 
 // Change password
-async function changePassword() {
+function changePassword() {
   try {
     // Get form data
     const currentPassword = document.getElementById('currentPassword').value;
@@ -959,194 +1080,67 @@ async function changePassword() {
 
 // Image preview function
 function previewImage(input, previewId) {
-  const preview = document.getElementById(previewId);
-  if (!preview) return;
+  try {
+    const preview = document.getElementById(previewId);
+    if (!preview) return;
 
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      preview.src = e.target.result;
-    };
-    reader.readAsDataURL(input.files[0]);
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        preview.src = e.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  } catch (error) {
+    console.error('Error previewing image:', error);
   }
 }
 
 // Show notification/toast
 function showNotification(message, type = 'success') {
-  // Create toast container if it doesn't exist
-  let toastContainer = document.querySelector('.toast-container');
-  if (!toastContainer) {
-    toastContainer = document.createElement('div');
-    toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
-    document.body.appendChild(toastContainer);
-  }
-  
-  // Create toast
-  const toast = document.createElement('div');
-  toast.className = `toast align-items-center text-white bg-${type} border-0`;
-  toast.setAttribute('role', 'alert');
-  toast.setAttribute('aria-live', 'assertive');
-  toast.setAttribute('aria-atomic', 'true');
-  
-  toast.innerHTML = `
-    <div class="d-flex">
-      <div class="toast-body">
-        ${message}
-      </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-  `;
-  
-  toastContainer.appendChild(toast);
-  
-  // Initialize Bootstrap toast
-  const bsToast = new bootstrap.Toast(toast, {
-    autohide: true,
-    delay: 5000
-  });
-  
-  bsToast.show();
-  
-  // Remove toast after hidden
-  toast.addEventListener('hidden.bs.toast', () => {
-    toast.remove();
-  });
-}
-
-// Initialize the profile page
-document.addEventListener('DOMContentLoaded', () => {
-  // Add CSS for view mode toggle
-  const style = document.createElement('style');
-  style.textContent = `
-    /* Hide view-only-self elements when not viewing own profile */
-    body:not(.viewing-own-profile) .view-only-self {
-      display: none !important;
+  try {
+    // Create toast container if it doesn't exist
+    let toastContainer = document.querySelector('.toast-container');
+    if (!toastContainer) {
+      toastContainer = document.createElement('div');
+      toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+      document.body.appendChild(toastContainer);
     }
     
-    /* Profile Card Styles */
-    .profile-card {
-      text-align: center;
-    }
-
-    .profile-card img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border: 6px solid #fff;
-      box-shadow: 0 0 20px rgba(65, 84, 241, 0.2);
-    }
-
-    .profile-card h2 {
-      font-size: 24px;
-      font-weight: 700;
-      margin: 10px 0 0 0;
-    }
-
-    .profile-card h3 {
-      font-size: 16px;
-      font-weight: 400;
-      color: #6c757d;
-    }
-
-    /* Social Links */
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .social-links a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      background-color: #f6f9ff;
-      border-radius: 50%;
-      color: #4154f1;
-      transition: all 0.3s ease;
-    }
-
-    .social-links a:hover {
-      background-color: #4154f1;
-      color: #fff;
-    }
-
-    /* Profile Tab Content */
-    .profile-overview .row {
-      margin-bottom: 20px;
-    }
-
-    .profile-overview .label {
-      font-weight: 600;
-      color: rgba(1, 41, 112, 0.6);
-    }
-
-    /* Activity Timeline */
-    .activity {
-      padding: 20px 0;
-    }
-
-    .activity .activity-item {
-      position: relative;
-      padding-left: 45px;
-      margin-bottom: 20px;
-    }
-
-    .activity .activity-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .activity .activity-item .activity-label {
-      position: absolute;
-      left: 0;
-      top: 0;
-      font-size: 14px;
-      font-weight: 600;
-      color: #6c757d;
-      width: 45px;
-    }
-
-    .activity .activity-item .activity-badge {
-      position: absolute;
-      left: 32px;
-      top: 6px;
-      z-index: 1;
-      font-size: 10px;
-    }
-
-    .activity .activity-item .activity-content {
-      position: relative;
-      padding-bottom: 20px;
-      border-left: 2px solid #ebeef4;
-      padding-left: 23px;
-    }
-
-    .activity .activity-item .activity-content::before {
-      content: "";
-      position: absolute;
-      left: -9px;
-      top: 0;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid;
-      background: #fff;
-    }
-
-    .activity .activity-item:last-child .activity-content {
-      padding-bottom: 0;
-    }
-
-    /* Toast notification */
-    .toast-container {
-      z-index: 1090;
-    }
-  `;
-  document.head.appendChild(style);
-  
-  // Initialize the profile page
-  initializeProfilePage();
-});
+    // Create toast
+    const toast = document.createElement('div');
+    toast.className = `toast align-items-center text-white bg-${type} border-0`;
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+    
+    toast.innerHTML = `
+      <div class="d-flex">
+        <div class="toast-body">
+          ${message}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    `;
+    
+    toastContainer.appendChild(toast);
+    
+    // Initialize Bootstrap toast
+    const bsToast = new bootstrap.Toast(toast, {
+      autohide: true,
+      delay: 5000
+    });
+    
+    bsToast.show();
+    
+    // Remove toast after hidden
+    toast.addEventListener('hidden.bs.toast', () => {
+      toast.remove();
+    });
+  } catch (error) {
+    console.error('Error showing notification:', error);
+    // Fallback to alert if toast fails
+    alert(message);
+  }
+}
   </script>
