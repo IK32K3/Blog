@@ -461,3 +461,148 @@ main {
     margin-bottom: 5px;
   }
 }
+
+.profile-mode-indicator {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.view-mode {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+.edit-mode {
+  background-color: #e7f3ff;
+  color: #0d6efd;
+}
+
+/* Styling for tabs that only show in certain modes */
+.nav-tabs .nav-link.disabled-tab {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments for profile page */
+@media (max-width: 991px) {
+  .profile-card {
+    margin-bottom: 30px;
+  }
+  
+  .profile-overview .label {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-edit .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .profile-overview .row {
+    margin-bottom: 10px;
+  }
+  
+  .col-form-label {
+    margin-bottom: 5px;
+  }
+  
+  .profile-card img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* Post list styling */
+.profile-posts .table td {
+  vertical-align: middle;
+}
+
+.profile-posts .table a {
+  text-decoration: none;
+}
+
+.profile-posts .table a:hover {
+  text-decoration: underline;
+}
+
+/* Improved badges */
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+}
+
+/* Animation for mode switching */
+.tab-pane {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.tab-pane.fade:not(.show) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tab-pane.fade.show {
+  opacity: 1;
+}
+
+/* Access denied overlay for restricted tabs */
+.access-denied-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  border-radius: 0.25rem;
+}
+
+.access-denied-overlay i {
+  font-size: 2rem;
+  color: #dc3545;
+  margin-bottom: 0.5rem;
+}
+
+.access-denied-overlay p {
+  text-align: center;
+  color: #212529;
+  font-weight: 500;
+}
+
+/* User posts table responsive improvements */
+@media (max-width: 768px) {
+  .profile-posts .table {
+    min-width: 650px;
+  }
+  
+  .profile-posts .table-responsive {
+    max-height: 400px;
+  }
+}
+
+/* Empty state for when there are no posts */
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: #6c757d;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.3;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}

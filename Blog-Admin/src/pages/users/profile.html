@@ -36,9 +36,9 @@
           <!-- Profile Card -->
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-              <img src="https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff" alt="Profile" class="rounded-circle" width="120" height="120">
-              <h2 class="mt-3">John Doe</h2>
-              <h3 class="text-muted">Administrator</h3>
+              <img src="https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff" alt="Profile" class="rounded-circle" width="120" height="120" id="profileImage">
+              <h2 class="mt-3" id="profileName">John Doe</h2>
+              <h3 class="text-muted" id="profileRole">Administrator</h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -51,17 +51,17 @@
           <!-- Profile Statistics -->
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Statistics</h5>
+              <h5 class="card-title">Content Statistics</h5>
               <div class="row">
                 <div class="col-6 border-end">
                   <div class="text-center">
-                    <h6>42</h6>
+                    <h6 id="postCount">42</h6>
                     <p class="text-muted small">Posts</p>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="text-center">
-                    <h6>156</h6>
+                    <h6 id="commentCount">156</h6>
                     <p class="text-muted small">Comments</p>
                   </div>
                 </div>
@@ -70,13 +70,13 @@
               <div class="row">
                 <div class="col-6 border-end">
                   <div class="text-center">
-                    <h6>24</h6>
+                    <h6 id="translationCount">24</h6>
                     <p class="text-muted small">Translations</p>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="text-center">
-                    <h6>7,392</h6>
+                    <h6 id="viewCount">7,392</h6>
                     <p class="text-muted small">Views</p>
                   </div>
                 </div>
@@ -84,8 +84,8 @@
             </div>
           </div>
 
-          <!-- Media Gallery -->
-          <div class="card">
+          <!-- Media Gallery - Only shown in detailed view or own profile -->
+          <div class="card view-only-self">
             <div class="card-body">
               <h5 class="card-title">Media Gallery</h5>
               <div class="row g-2">
@@ -117,27 +117,30 @@
         <div class="col-xl-8">
           <div class="card">
             <div class="card-body pt-3">
-              <!-- Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+              <!-- Tabs - Only some tabs visible when viewing other profiles -->
+              <ul class="nav nav-tabs nav-tabs-bordered" role="tablist" id="profileTabs">
                 <li class="nav-item" role="presentation">
                   <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#profile-overview" type="button" role="tab" aria-controls="profile-overview" aria-selected="true">Overview</button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <li class="nav-item view-only-self" role="presentation">
                   <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#profile-edit" type="button" role="tab" aria-controls="profile-edit" aria-selected="false">Edit Profile</button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <li class="nav-item view-only-self" role="presentation">
                   <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#profile-settings" type="button" role="tab" aria-controls="profile-settings" aria-selected="false">Settings</button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <li class="nav-item view-only-self" role="presentation">
                   <button class="nav-link" id="change-password-tab" data-bs-toggle="tab" data-bs-target="#profile-change-password" type="button" role="tab" aria-controls="profile-change-password" aria-selected="false">Change Password</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#profile-posts" type="button" role="tab" aria-controls="profile-posts" aria-selected="false">Posts</button>
                 </li>
               </ul>
 
               <div class="tab-content pt-2">
-                <!-- Overview Tab -->
+                <!-- Overview Tab - Visible to everyone -->
                 <div class="tab-pane fade show active profile-overview" id="profile-overview" role="tabpanel" aria-labelledby="overview-tab">
                   <h5 class="card-title">About</h5>
-                  <p class="small">
+                  <p class="small" id="profileDescription">
                     John Doe is an experienced content creator with expertise in technology and SEO optimization. 
                     With over 10 years of experience in digital marketing, John has helped numerous companies 
                     improve their online presence and search engine rankings.
@@ -146,48 +149,48 @@
                   <h5 class="card-title">Profile Details</h5>
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Username</div>
-                    <div class="col-lg-9 col-md-8">johndoe</div>
+                    <div class="col-lg-9 col-md-8" id="infoUsername">johndoe</div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Full Name</div>
-                    <div class="col-lg-9 col-md-8">John Doe</div>
+                    <div class="col-lg-9 col-md-8" id="infoFullName">John Doe</div>
                   </div>
-                  <div class="row">
+                  <div class="row view-only-self">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">john.doe@example.com</div>
+                    <div class="col-lg-9 col-md-8" id="infoEmail">john.doe@example.com</div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Role</div>
-                    <div class="col-lg-9 col-md-8">Administrator</div>
+                    <div class="col-lg-9 col-md-8" id="infoRole">Administrator</div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Status</div>
-                    <div class="col-lg-9 col-md-8"><span class="badge bg-success">Active</span></div>
+                    <div class="col-lg-9 col-md-8" id="infoStatus"><span class="badge bg-success">Active</span></div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Joined Date</div>
-                    <div class="col-lg-9 col-md-8">2023-01-15</div>
+                    <div class="col-lg-9 col-md-8" id="infoJoinedDate">2023-01-15</div>
                   </div>
-                  <div class="row">
+                  <div class="row view-only-self">
                     <div class="col-lg-3 col-md-4 label">Last Login</div>
-                    <div class="col-lg-9 col-md-8">2023-11-05 14:30:24</div>
+                    <div class="col-lg-9 col-md-8" id="infoLastLogin">2023-11-05 14:30:24</div>
                   </div>
                 </div>
 
-                <!-- Edit Profile Tab -->
-                <div class="tab-pane fade profile-edit" id="profile-edit" role="tabpanel" aria-labelledby="edit-tab">
+                <!-- Edit Profile Tab - Only visible when viewing own profile -->
+                <div class="tab-pane fade profile-edit view-only-self" id="profile-edit" role="tabpanel" aria-labelledby="edit-tab">
                   <h5 class="card-title">Edit Profile</h5>
                   
-                  <form>
+                  <form id="editProfileForm">
                     <div class="row mb-3">
-                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                      <label for="profileImageUpload" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                       <div class="col-md-8 col-lg-9">
                         <div class="d-flex align-items-center">
-                          <img src="https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff" alt="Profile" width="120" height="120">
+                          <img src="https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff" alt="Profile" width="120" height="120" id="editProfileImage">
                           <div class="ms-3">
                             <div class="input-group">
-                              <input type="file" class="form-control" id="profileImage" name="profileImage">
-                              <label class="input-group-text" for="profileImage">Upload</label>
+                              <input type="file" class="form-control" id="profileImageUpload" name="profileImageUpload" onchange="previewImage(this, 'editProfileImage')">
+                              <label class="input-group-text" for="profileImageUpload">Upload</label>
                             </div>
                             <div class="pt-2 d-flex gap-2">
                               <button type="button" class="btn btn-danger btn-sm" title="Remove profile image"><i class="bi bi-trash"></i></button>
@@ -199,70 +202,58 @@
                     </div>
 
                     <div class="row mb-3">
-                      <label for="username" class="col-md-4 col-lg-3 col-form-label">Username</label>
+                      <label for="editUsername" class="col-md-4 col-lg-3 col-form-label">Username</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="username" type="text" class="form-control" id="username" value="johndoe">
+                        <input name="username" type="text" class="form-control" id="editUsername" value="johndoe">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                      <label for="editFullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="text" class="form-control" id="fullName" value="John Doe">
+                        <input name="fullName" type="text" class="form-control" id="editFullName" value="John Doe">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <label for="editEmail" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="email" value="john.doe@example.com">
+                        <input name="email" type="email" class="form-control" id="editEmail" value="john.doe@example.com">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="role" class="col-md-4 col-lg-3 col-form-label">Role</label>
+                      <label for="editDescription" class="col-md-4 col-lg-3 col-form-label">About</label>
                       <div class="col-md-8 col-lg-9">
-                        <select name="role" id="role" class="form-select">
-                          <option value="1" selected>Administrator</option>
-                          <option value="2">Editor</option>
-                          <option value="3">Author</option>
-                          <option value="4">Contributor</option>
-                        </select>
+                        <textarea name="description" class="form-control" id="editDescription" rows="6">John Doe is an experienced content creator with expertise in technology and SEO optimization. With over 10 years of experience in digital marketing, John has helped numerous companies improve their online presence and search engine rankings.</textarea>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="description" class="col-md-4 col-lg-3 col-form-label">About</label>
+                      <label for="editTwitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
                       <div class="col-md-8 col-lg-9">
-                        <textarea name="description" class="form-control" id="description" rows="6">John Doe is an experienced content creator with expertise in technology and SEO optimization. With over 10 years of experience in digital marketing, John has helped numerous companies improve their online presence and search engine rankings.</textarea>
+                        <input name="twitter" type="text" class="form-control" id="editTwitter" value="https://twitter.com/johndoe">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
+                      <label for="editFacebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="twitter" type="text" class="form-control" id="twitter" value="https://twitter.com/johndoe">
+                        <input name="facebook" type="text" class="form-control" id="editFacebook" value="https://facebook.com/johndoe">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
+                      <label for="editInstagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="facebook" type="text" class="form-control" id="facebook" value="https://facebook.com/johndoe">
+                        <input name="instagram" type="text" class="form-control" id="editInstagram" value="https://instagram.com/johndoe">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
+                      <label for="editLinkedin" class="col-md-4 col-lg-3 col-form-label">LinkedIn Profile</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="instagram" type="text" class="form-control" id="instagram" value="https://instagram.com/johndoe">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="linkedin" class="col-md-4 col-lg-3 col-form-label">LinkedIn Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="linkedin" type="text" class="form-control" id="linkedin" value="https://linkedin.com/in/johndoe">
+                        <input name="linkedin" type="text" class="form-control" id="editLinkedin" value="https://linkedin.com/in/johndoe">
                       </div>
                     </div>
 
@@ -272,11 +263,11 @@
                   </form>
                 </div>
 
-                <!-- Settings Tab -->
-                <div class="tab-pane fade profile-settings" id="profile-settings" role="tabpanel" aria-labelledby="settings-tab">
+                <!-- Settings Tab - Only visible when viewing own profile -->
+                <div class="tab-pane fade profile-settings view-only-self" id="profile-settings" role="tabpanel" aria-labelledby="settings-tab">
                   <h5 class="card-title">User Settings</h5>
                   
-                  <form>
+                  <form id="settingsForm">
                     <div class="row mb-3">
                       <label for="isActive" class="col-md-4 col-lg-3 col-form-label">Account Status</label>
                       <div class="col-md-8 col-lg-9">
@@ -352,11 +343,11 @@
                   </form>
                 </div>
 
-                <!-- Change Password Tab -->
-                <div class="tab-pane fade profile-change-password" id="profile-change-password" role="tabpanel" aria-labelledby="change-password-tab">
+                <!-- Change Password Tab - Only visible when viewing own profile -->
+                <div class="tab-pane fade profile-change-password view-only-self" id="profile-change-password" role="tabpanel" aria-labelledby="change-password-tab">
                   <h5 class="card-title">Change Password</h5>
                   
-                  <form>
+                  <form id="changePasswordForm">
                     <div class="row mb-3">
                       <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                       <div class="col-md-8 col-lg-9">
@@ -383,12 +374,88 @@
                     </div>
                   </form>
                 </div>
+
+                <!-- Posts Tab - Visible to everyone -->
+                <div class="tab-pane fade profile-posts" id="profile-posts" role="tabpanel" aria-labelledby="posts-tab">
+                  <h5 class="card-title">Recent Posts</h5>
+                  
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Category</th>
+                          <th>Language</th>
+                          <th>Date</th>
+                          <th>Status</th>
+                          <th>Views</th>
+                        </tr>
+                      </thead>
+                      <tbody id="userPostsList">
+                        <tr>
+                          <td><a href="#" class="text-primary fw-bold">10 Tips for Better SEO</a></td>
+                          <td>Technology</td>
+                          <td>English</td>
+                          <td>2023-11-01</td>
+                          <td><span class="badge bg-success">Published</span></td>
+                          <td>1,286</td>
+                        </tr>
+                        <tr>
+                          <td><a href="#" class="text-primary fw-bold">Getting Started with Bootstrap</a></td>
+                          <td>Technology</td>
+                          <td>English</td>
+                          <td>2023-10-30</td>
+                          <td><span class="badge bg-success">Published</span></td>
+                          <td>958</td>
+                        </tr>
+                        <tr>
+                          <td><a href="#" class="text-primary fw-bold">Healthy Breakfast Ideas</a></td>
+                          <td>Food</td>
+                          <td>English</td>
+                          <td>2023-10-28</td>
+                          <td><span class="badge bg-success">Published</span></td>
+                          <td>2,154</td>
+                        </tr>
+                        <tr>
+                          <td><a href="#" class="text-primary fw-bold">Top Travel Destinations 2023</a></td>
+                          <td>Travel</td>
+                          <td>English</td>
+                          <td>2023-10-25</td>
+                          <td><span class="badge bg-success">Published</span></td>
+                          <td>1,893</td>
+                        </tr>
+                        <tr>
+                          <td><a href="#" class="text-primary fw-bold">Ultimate Guide to Remote Work</a></td>
+                          <td>Lifestyle</td>
+                          <td>English</td>
+                          <td>2023-10-23</td>
+                          <td><span class="badge bg-warning text-dark">Draft</span></td>
+                          <td>0</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  <!-- Pagination -->
+                  <nav>
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                      </li>
+                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Recent Activity -->
-          <div class="card">
+          <!-- Recent Activity - Only shown in detailed view or own profile -->
+          <div class="card view-only-self">
             <div class="card-body">
               <h5 class="card-title">Recent Activity</h5>
               
@@ -446,7 +513,7 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Component loader - simplified version for GitHub Pages
+    // Component loader
     document.addEventListener('DOMContentLoaded', () => {
       // Load components
       const components = document.querySelectorAll('[data-inject]');
@@ -464,22 +531,622 @@
             component.innerHTML = `<div class="alert alert-danger">Failed to load component: ${path}</div>`;
           });
       });
+
+      // Initialize the profile page
+      initializeProfilePage();
     });
 
-    // Image preview function
-    const previewImage = (input, previewId) => {
-      const preview = document.getElementById(previewId);
-      if (!preview) return;
+    // Initialize profile page based on view mode
+    function initializeProfilePage() {
+      // Get user ID from URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('id');
+      
+      // Check if viewing own profile or someone else's
+      // This is a simplified check - in a real app, you'd compare with the logged-in user's ID
+      const isOwnProfile = !userId || userId === 'self';
+      
+      // Set view mode
+      document.body.classList.toggle('viewing-own-profile', isOwnProfile);
+      
+      // Show/hide elements based on view mode
+      const selfOnlyElements = document.querySelectorAll('.view-only-self');
+      selfOnlyElements.forEach(element => {
+        element.style.display = isOwnProfile ? '' : 'none';
+      });
+      
+      // If email is shown in other view mode, hide it specially
+      if (!isOwnProfile) {
+        const emailRow = document.querySelector('.row:has(#infoEmail)');
+        if (emailRow) emailRow.style.display = 'none';
+      }
+      
+      // If not viewing own profile, load the other user's data
+      if (!isOwnProfile) {
+        loadUserData(userId);
+      } else {
+        // Load current user's data
+        loadUserData('self');
+      }
+      
+      // Set up form submission handlers
+      setupFormHandlers();
+    }
+    
+   // Load user data from the server
+async function loadUserData(userId) {
+  try {
+    // This is where you would make an API call to get the user data
+    // For demo purposes, we're using hardcoded data
+    
+    let userData;
+    
+    if (userId === 'self') {
+      userData = {
+        id: 1,
+        username: 'johndoe',
+        fullName: 'John Doe',
+        email: 'john.doe@example.com',
+        role: 'Administrator',
+        roleId: 1,
+        description: 'John Doe is an experienced content creator with expertise in technology and SEO optimization. With over 10 years of experience in digital marketing, John has helped numerous companies improve their online presence and search engine rankings.',
+        isActive: true,
+        joinedDate: '2023-01-15',
+        lastLogin: '2023-11-05 14:30:24',
+        profileImage: 'https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff',
+        social: {
+          twitter: 'https://twitter.com/johndoe',
+          facebook: 'https://facebook.com/johndoe',
+          instagram: 'https://instagram.com/johndoe',
+          linkedin: 'https://linkedin.com/in/johndoe'
+        },
+        stats: {
+          posts: 42,
+          comments: 156,
+          translations: 24,
+          views: 7392
+        }
+      };
+    } else if (userId === '2') {
+      userData = {
+        id: 2,
+        username: 'janesmith',
+        fullName: 'Jane Smith',
+        email: 'jane.smith@example.com',
+        role: 'Editor',
+        roleId: 2,
+        description: 'Jane Smith is a content editor with a background in journalism. She specializes in technology and lifestyle content.',
+        isActive: true,
+        joinedDate: '2023-02-20',
+        lastLogin: '2023-11-04 09:15:42',
+        profileImage: 'https://ui-avatars.com/api/?name=J+S&background=4154f1&color=fff',
+        social: {
+          twitter: 'https://twitter.com/janesmith',
+          facebook: 'https://facebook.com/janesmith',
+          instagram: 'https://instagram.com/janesmith',
+          linkedin: 'https://linkedin.com/in/janesmith'
+        },
+        stats: {
+          posts: 34,
+          comments: 89,
+          translations: 15,
+          views: 4586
+        }
+      };
+    } else if (userId === '3') {
+      userData = {
+        id: 3,
+        username: 'mikejohnson',
+        fullName: 'Mike Johnson',
+        email: 'mike.johnson@example.com',
+        role: 'Author',
+        roleId: 3,
+        description: 'Mike Johnson writes about travel destinations and food experiences from around the world.',
+        isActive: true,
+        joinedDate: '2023-03-10',
+        lastLogin: '2023-11-03 16:22:10',
+        profileImage: 'https://ui-avatars.com/api/?name=M+J&background=4154f1&color=fff',
+        social: {
+          twitter: 'https://twitter.com/mikejohnson',
+          facebook: 'https://facebook.com/mikejohnson',
+          instagram: 'https://instagram.com/mikejohnson',
+          linkedin: 'https://linkedin.com/in/mikejohnson'
+        },
+        stats: {
+          posts: 27,
+          comments: 45,
+          translations: 8,
+          views: 3125
+        }
+      };
+    } else {
+      // Default or not found
+      throw new Error('User not found');
+    }
+    
+    // Update the UI with the user data
+    updateProfileUI(userData);
+    
+    // If own profile, also populate the form fields
+    if (userId === 'self') {
+      populateFormFields(userData);
+    }
+    
+    // Load user posts (would be a separate API call in a real app)
+    loadUserPosts(userId);
+    
+  } catch (error) {
+    console.error('Error loading user data:', error);
+    showNotification('Error loading profile data. Please try again.', 'danger');
+  }
+}
 
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          preview.src = e.target.result;
-          preview.style.display = 'block';
-        };
-        reader.readAsDataURL(input.files[0]);
+// Update the profile UI with user data
+function updateProfileUI(userData) {
+  // Update profile card
+  document.getElementById('profileImage').src = userData.profileImage;
+  document.getElementById('profileName').textContent = userData.fullName;
+  document.getElementById('profileRole').textContent = userData.role;
+  
+  // Update profile overview
+  document.getElementById('profileDescription').textContent = userData.description;
+  document.getElementById('infoUsername').textContent = userData.username;
+  document.getElementById('infoFullName').textContent = userData.fullName;
+  document.getElementById('infoEmail').textContent = userData.email;
+  document.getElementById('infoRole').textContent = userData.role;
+  
+  // Update status badge
+  const statusBadge = document.getElementById('infoStatus').querySelector('span') || document.createElement('span');
+  statusBadge.className = `badge ${userData.isActive ? 'bg-success' : 'bg-danger'}`;
+  statusBadge.textContent = userData.isActive ? 'Active' : 'Inactive';
+  document.getElementById('infoStatus').innerHTML = '';
+  document.getElementById('infoStatus').appendChild(statusBadge);
+  
+  // Update dates
+  document.getElementById('infoJoinedDate').textContent = userData.joinedDate;
+  if (document.getElementById('infoLastLogin')) {
+    document.getElementById('infoLastLogin').textContent = userData.lastLogin;
+  }
+  
+  // Update statistics
+  document.getElementById('postCount').textContent = userData.stats.posts;
+  document.getElementById('commentCount').textContent = userData.stats.comments;
+  document.getElementById('translationCount').textContent = userData.stats.translations;
+  document.getElementById('viewCount').textContent = userData.stats.views.toLocaleString();
+  
+  // Update social links
+  updateSocialLinks(userData.social);
+}
+
+// Update social links
+function updateSocialLinks(social) {
+  const links = document.querySelectorAll('.social-links a');
+  if (links.length >= 4) {
+    links[0].href = social.twitter || '#';
+    links[1].href = social.facebook || '#';
+    links[2].href = social.instagram || '#';
+    links[3].href = social.linkedin || '#';
+  }
+}
+
+// Populate form fields for editing
+function populateFormFields(userData) {
+  // Profile edit form
+  document.getElementById('editProfileImage').src = userData.profileImage;
+  document.getElementById('editUsername').value = userData.username;
+  document.getElementById('editFullName').value = userData.fullName;
+  document.getElementById('editEmail').value = userData.email;
+  document.getElementById('editDescription').value = userData.description;
+  
+  // Social media inputs
+  document.getElementById('editTwitter').value = userData.social.twitter || '';
+  document.getElementById('editFacebook').value = userData.social.facebook || '';
+  document.getElementById('editInstagram').value = userData.social.instagram || '';
+  document.getElementById('editLinkedin').value = userData.social.linkedin || '';
+  
+  // Settings form
+  document.getElementById('isActive').checked = userData.isActive;
+}
+
+// Load user posts
+async function loadUserPosts(userId) {
+  try {
+    // In a real app, you would make an API call to get the user's posts
+    // For demo purposes, we're using hardcoded data
+    
+    const postsData = [
+      {
+        title: '10 Tips for Better SEO',
+        category: 'Technology',
+        language: 'English',
+        date: '2023-11-01',
+        status: 'Published',
+        views: 1286
+      },
+      {
+        title: 'Getting Started with Bootstrap',
+        category: 'Technology',
+        language: 'English',
+        date: '2023-10-30',
+        status: 'Published',
+        views: 958
+      },
+      {
+        title: 'Healthy Breakfast Ideas',
+        category: 'Food',
+        language: 'English',
+        date: '2023-10-28',
+        status: 'Published',
+        views: 2154
+      },
+      {
+        title: 'Top Travel Destinations 2023',
+        category: 'Travel',
+        language: 'English',
+        date: '2023-10-25',
+        status: 'Published',
+        views: 1893
+      },
+      {
+        title: 'Ultimate Guide to Remote Work',
+        category: 'Lifestyle',
+        language: 'English',
+        date: '2023-10-23',
+        status: 'Draft',
+        views: 0
+      }
+    ];
+    
+    // Update the UI with the posts data
+    updatePostsTable(postsData);
+    
+  } catch (error) {
+    console.error('Error loading user posts:', error);
+    showNotification('Error loading posts data. Please try again.', 'danger');
+  }
+}
+
+// Update posts table
+function updatePostsTable(postsData) {
+  const tableBody = document.getElementById('userPostsList');
+  if (!tableBody) return;
+  
+  // Clear existing rows
+  tableBody.innerHTML = '';
+  
+  // Add new rows
+  postsData.forEach(post => {
+    const row = document.createElement('tr');
+    
+    row.innerHTML = `
+      <td><a href="#" class="text-primary fw-bold">${post.title}</a></td>
+      <td>${post.category}</td>
+      <td>${post.language}</td>
+      <td>${post.date}</td>
+      <td><span class="badge ${post.status === 'Published' ? 'bg-success' : 'bg-warning text-dark'}">${post.status}</span></td>
+      <td>${post.views.toLocaleString()}</td>
+    `;
+    
+    tableBody.appendChild(row);
+  });
+}
+
+// Set up form submission handlers
+function setupFormHandlers() {
+  // Edit profile form
+  const editProfileForm = document.getElementById('editProfileForm');
+  if (editProfileForm) {
+    editProfileForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      saveProfile();
+    });
+  }
+  
+  // Settings form
+  const settingsForm = document.getElementById('settingsForm');
+  if (settingsForm) {
+    settingsForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      saveSettings();
+    });
+  }
+  
+  // Change password form
+  const passwordForm = document.getElementById('changePasswordForm');
+  if (passwordForm) {
+    passwordForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      changePassword();
+    });
+  }
+}
+
+// Save profile changes
+async function saveProfile() {
+  try {
+    // Get form data
+    const formData = {
+      username: document.getElementById('editUsername').value,
+      fullName: document.getElementById('editFullName').value,
+      email: document.getElementById('editEmail').value,
+      description: document.getElementById('editDescription').value,
+      social: {
+        twitter: document.getElementById('editTwitter').value,
+        facebook: document.getElementById('editFacebook').value,
+        instagram: document.getElementById('editInstagram').value,
+        linkedin: document.getElementById('editLinkedin').value
       }
     };
+    
+    // In a real app, you would make an API call to save the profile
+    console.log('Saving profile:', formData);
+    
+    // Show success message
+    showNotification('Profile updated successfully!', 'success');
+    
+    // Reload user data to reflect changes
+    setTimeout(() => {
+      loadUserData('self');
+    }, 1000);
+    
+  } catch (error) {
+    console.error('Error saving profile:', error);
+    showNotification('Error saving profile. Please try again.', 'danger');
+  }
+}
+
+// Save settings
+async function saveSettings() {
+  try {
+    // Get form data
+    const formData = {
+      isActive: document.getElementById('isActive').checked,
+      emailNotifications: {
+        comments: document.getElementById('emailComments').checked,
+        translations: document.getElementById('emailTranslations').checked,
+        newsletter: document.getElementById('emailNewsletter').checked,
+        marketing: document.getElementById('emailMarketing').checked
+      },
+      language: document.getElementById('language').value,
+      timezone: document.getElementById('timezone').value
+    };
+    
+    // In a real app, you would make an API call to save the settings
+    console.log('Saving settings:', formData);
+    
+    // Show success message
+    showNotification('Settings saved successfully!', 'success');
+    
+  } catch (error) {
+    console.error('Error saving settings:', error);
+    showNotification('Error saving settings. Please try again.', 'danger');
+  }
+}
+
+// Change password
+async function changePassword() {
+  try {
+    // Get form data
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    // Validation
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      throw new Error('All password fields are required');
+    }
+    
+    if (newPassword !== confirmPassword) {
+      throw new Error('New password and confirmation do not match');
+    }
+    
+    // In a real app, you would make an API call to change the password
+    console.log('Changing password');
+    
+    // Clear form
+    document.getElementById('currentPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    
+    // Show success message
+    showNotification('Password changed successfully!', 'success');
+    
+  } catch (error) {
+    console.error('Error changing password:', error);
+    showNotification(error.message || 'Error changing password. Please try again.', 'danger');
+  }
+}
+
+// Image preview function
+function previewImage(input, previewId) {
+  const preview = document.getElementById(previewId);
+  if (!preview) return;
+
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      preview.src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+// Show notification/toast
+function showNotification(message, type = 'success') {
+  // Create toast container if it doesn't exist
+  let toastContainer = document.querySelector('.toast-container');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+    document.body.appendChild(toastContainer);
+  }
+  
+  // Create toast
+  const toast = document.createElement('div');
+  toast.className = `toast align-items-center text-white bg-${type} border-0`;
+  toast.setAttribute('role', 'alert');
+  toast.setAttribute('aria-live', 'assertive');
+  toast.setAttribute('aria-atomic', 'true');
+  
+  toast.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body">
+        ${message}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  `;
+  
+  toastContainer.appendChild(toast);
+  
+  // Initialize Bootstrap toast
+  const bsToast = new bootstrap.Toast(toast, {
+    autohide: true,
+    delay: 5000
+  });
+  
+  bsToast.show();
+  
+  // Remove toast after hidden
+  toast.addEventListener('hidden.bs.toast', () => {
+    toast.remove();
+  });
+}
+
+// Initialize the profile page
+document.addEventListener('DOMContentLoaded', () => {
+  // Add CSS for view mode toggle
+  const style = document.createElement('style');
+  style.textContent = `
+    /* Hide view-only-self elements when not viewing own profile */
+    body:not(.viewing-own-profile) .view-only-self {
+      display: none !important;
+    }
+    
+    /* Profile Card Styles */
+    .profile-card {
+      text-align: center;
+    }
+
+    .profile-card img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border: 6px solid #fff;
+      box-shadow: 0 0 20px rgba(65, 84, 241, 0.2);
+    }
+
+    .profile-card h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 10px 0 0 0;
+    }
+
+    .profile-card h3 {
+      font-size: 16px;
+      font-weight: 400;
+      color: #6c757d;
+    }
+
+    /* Social Links */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background-color: #f6f9ff;
+      border-radius: 50%;
+      color: #4154f1;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background-color: #4154f1;
+      color: #fff;
+    }
+
+    /* Profile Tab Content */
+    .profile-overview .row {
+      margin-bottom: 20px;
+    }
+
+    .profile-overview .label {
+      font-weight: 600;
+      color: rgba(1, 41, 112, 0.6);
+    }
+
+    /* Activity Timeline */
+    .activity {
+      padding: 20px 0;
+    }
+
+    .activity .activity-item {
+      position: relative;
+      padding-left: 45px;
+      margin-bottom: 20px;
+    }
+
+    .activity .activity-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .activity .activity-item .activity-label {
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #6c757d;
+      width: 45px;
+    }
+
+    .activity .activity-item .activity-badge {
+      position: absolute;
+      left: 32px;
+      top: 6px;
+      z-index: 1;
+      font-size: 10px;
+    }
+
+    .activity .activity-item .activity-content {
+      position: relative;
+      padding-bottom: 20px;
+      border-left: 2px solid #ebeef4;
+      padding-left: 23px;
+    }
+
+    .activity .activity-item .activity-content::before {
+      content: "";
+      position: absolute;
+      left: -9px;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid;
+      background: #fff;
+    }
+
+    .activity .activity-item:last-child .activity-content {
+      padding-bottom: 0;
+    }
+
+    /* Toast notification */
+    .toast-container {
+      z-index: 1090;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Initialize the profile page
+  initializeProfilePage();
+});
   </script>
-</body>
-</html>
