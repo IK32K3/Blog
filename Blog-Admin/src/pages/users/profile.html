@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile - Blog Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Use CDN links for reliable loading on GitHub Pages -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS with relative path -->
   <link href="../../assets/css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -21,13 +23,12 @@
   <main id="main" class="main">
     <div class="pagetitle">
       <h1>User Profile</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
-          <li class="breadcrumb-item"><a href="/src/pages/users/index.html">Users</a></li>
-          <li class="breadcrumb-item active">Profile</li>
-        </ol>
-      </nav>
+      <div class="profile-mode-indicator view-mode" id="viewModeIndicator">
+        <i class="bi bi-eye"></i> View Mode
+      </div>
+      <div class="profile-mode-indicator edit-mode" id="editModeIndicator" style="display: none;">
+        <i class="bi bi-pencil"></i> Edit Mode
+      </div>
     </div>
 
     <section class="section profile">
@@ -36,9 +37,9 @@
           <!-- Profile Card -->
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-              <img src="https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff" alt="Profile" class="rounded-circle" width="120" height="120" id="profileImage">
-              <h2 class="mt-3" id="profileName">John Doe</h2>
-              <h3 class="text-muted" id="profileRole">Administrator</h3>
+              <img src="" alt="Profile" class="rounded-circle" id="profileImage">
+              <h2 id="profileName">User Name</h2>
+              <h3 id="profileRole">Role</h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -48,66 +49,37 @@
             </div>
           </div>
 
-          <!-- Profile Statistics -->
-          <div class="card">
+          <!-- Profile Actions Card -->
+          <div class="card" id="profileActions">
             <div class="card-body">
-              <h5 class="card-title">Content Statistics</h5>
-              <div class="row">
-                <div class="col-6 border-end">
-                  <div class="text-center">
-                    <h6 id="postCount">42</h6>
-                    <p class="text-muted small">Posts</p>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="text-center">
-                    <h6 id="commentCount">156</h6>
-                    <p class="text-muted small">Comments</p>
-                  </div>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-6 border-end">
-                  <div class="text-center">
-                    <h6 id="translationCount">24</h6>
-                    <p class="text-muted small">Translations</p>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="text-center">
-                    <h6 id="viewCount">7,392</h6>
-                    <p class="text-muted small">Views</p>
-                  </div>
-                </div>
+              <h5 class="card-title">Profile Actions</h5>
+              <div class="d-grid gap-2" id="adminActions">
+                <button class="btn btn-primary" id="editProfileBtn">
+                  <i class="bi bi-pencil me-1"></i> Edit Profile
+                </button>
+                <button class="btn btn-danger" id="deleteUserBtn" style="display: none;">
+                  <i class="bi bi-trash me-1"></i> Delete Account
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- Media Gallery - Only shown in detailed view or own profile -->
-          <div class="card view-only-self">
+          <!-- Profile Statistics Card -->
+          <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Media Gallery</h5>
-              <div class="row g-2">
-                <div class="col-4">
-                  <img src="https://via.placeholder.com/150" alt="Gallery Image" class="img-fluid rounded">
+              <h5 class="card-title">User Statistics</h5>
+              <div class="d-flex flex-column">
+                <div class="stat-card p-3 mb-2 bg-light rounded">
+                  <div class="stat-card-title">Total Posts</div>
+                  <div class="stat-card-value" id="totalPosts">0</div>
                 </div>
-                <div class="col-4">
-                  <img src="https://via.placeholder.com/150" alt="Gallery Image" class="img-fluid rounded">
+                <div class="stat-card p-3 mb-2 bg-light rounded">
+                  <div class="stat-card-title">Account Status</div>
+                  <div class="stat-card-value" id="accountStatus">-</div>
                 </div>
-                <div class="col-4">
-                  <img src="https://via.placeholder.com/150" alt="Gallery Image" class="img-fluid rounded">
-                </div>
-                <div class="col-4">
-                  <img src="https://via.placeholder.com/150" alt="Gallery Image" class="img-fluid rounded">
-                </div>
-                <div class="col-4">
-                  <img src="https://via.placeholder.com/150" alt="Gallery Image" class="img-fluid rounded">
-                </div>
-                <div class="col-4">
-                  <div class="d-flex justify-content-center align-items-center bg-light rounded h-100">
-                    <a href="#" class="text-primary">View All</a>
-                  </div>
+                <div class="stat-card p-3 bg-light rounded">
+                  <div class="stat-card-title">Joined Date</div>
+                  <div class="stat-card-value" id="joinedDate">-</div>
                 </div>
               </div>
             </div>
@@ -117,236 +89,203 @@
         <div class="col-xl-8">
           <div class="card">
             <div class="card-body pt-3">
-              <!-- Tabs - Only some tabs visible when viewing other profiles -->
-              <ul class="nav nav-tabs nav-tabs-bordered" role="tablist" id="profileTabs">
+              <!-- Tabs Navigation -->
+              <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#profile-overview" type="button" role="tab" aria-controls="profile-overview" aria-selected="true">Overview</button>
                 </li>
-                <li class="nav-item view-only-self" role="presentation">
+                <li class="nav-item" role="presentation">
                   <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#profile-edit" type="button" role="tab" aria-controls="profile-edit" aria-selected="false">Edit Profile</button>
-                </li>
-                <li class="nav-item view-only-self" role="presentation">
-                  <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#profile-settings" type="button" role="tab" aria-controls="profile-settings" aria-selected="false">Settings</button>
-                </li>
-                <li class="nav-item view-only-self" role="presentation">
-                  <button class="nav-link" id="change-password-tab" data-bs-toggle="tab" data-bs-target="#profile-change-password" type="button" role="tab" aria-controls="profile-change-password" aria-selected="false">Change Password</button>
                 </li>
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#profile-posts" type="button" role="tab" aria-controls="profile-posts" aria-selected="false">Posts</button>
                 </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="change-password-tab" data-bs-toggle="tab" data-bs-target="#profile-change-password" type="button" role="tab" aria-controls="profile-change-password" aria-selected="false">Change Password</button>
+                </li>
               </ul>
 
+              <!-- Tabs Content -->
               <div class="tab-content pt-2">
-                <!-- Overview Tab - Visible to everyone -->
-                <div class="tab-pane fade show active profile-overview" id="profile-overview" role="tabpanel" aria-labelledby="overview-tab">
+                <!-- Overview Tab -->
+                <div class="tab-pane fade show active profile-overview" id="profile-overview" role="tabpanel">
                   <h5 class="card-title">About</h5>
-                  <p class="small" id="profileDescription">
-                    John Doe is an experienced content creator with expertise in technology and SEO optimization. 
-                    With over 10 years of experience in digital marketing, John has helped numerous companies 
-                    improve their online presence and search engine rankings.
+                  <p class="small fst-italic" id="userDescription">
+                    User description will be displayed here.
                   </p>
 
                   <h5 class="card-title">Profile Details</h5>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Username</div>
-                    <div class="col-lg-9 col-md-8" id="infoUsername">johndoe</div>
-                  </div>
-                  <div class="row">
+
+                  <div class="row mb-2">
                     <div class="col-lg-3 col-md-4 label">Full Name</div>
-                    <div class="col-lg-9 col-md-8" id="infoFullName">John Doe</div>
+                    <div class="col-lg-9 col-md-8" id="fullName">-</div>
                   </div>
-                  <div class="row view-only-self">
+
+                  <div class="row mb-2">
+                    <div class="col-lg-3 col-md-4 label">Username</div>
+                    <div class="col-lg-9 col-md-8" id="username">-</div>
+                  </div>
+
+                  <div class="row mb-2">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8" id="infoEmail">john.doe@example.com</div>
+                    <div class="col-lg-9 col-md-8" id="email">-</div>
                   </div>
-                  <div class="row">
+
+                  <div class="row mb-2">
                     <div class="col-lg-3 col-md-4 label">Role</div>
-                    <div class="col-lg-9 col-md-8" id="infoRole">Administrator</div>
+                    <div class="col-lg-9 col-md-8" id="role">-</div>
                   </div>
-                  <div class="row">
+
+                  <div class="row mb-2">
                     <div class="col-lg-3 col-md-4 label">Status</div>
-                    <div class="col-lg-9 col-md-8" id="infoStatus"><span class="badge bg-success">Active</span></div>
+                    <div class="col-lg-9 col-md-8" id="status">-</div>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Joined Date</div>
-                    <div class="col-lg-9 col-md-8" id="infoJoinedDate">2023-01-15</div>
+
+                  <div class="row mb-2">
+                    <div class="col-lg-3 col-md-4 label">Joined</div>
+                    <div class="col-lg-9 col-md-8" id="joined">-</div>
                   </div>
-                  <div class="row view-only-self">
-                    <div class="col-lg-3 col-md-4 label">Last Login</div>
-                    <div class="col-lg-9 col-md-8" id="infoLastLogin">2023-11-05 14:30:24</div>
+
+                  <div class="row mb-2">
+                    <div class="col-lg-3 col-md-4 label">Last Updated</div>
+                    <div class="col-lg-9 col-md-8" id="lastUpdated">-</div>
                   </div>
                 </div>
 
-                <!-- Edit Profile Tab - Only visible when viewing own profile -->
-                <div class="tab-pane fade profile-edit view-only-self" id="profile-edit" role="tabpanel" aria-labelledby="edit-tab">
-                  <h5 class="card-title">Edit Profile</h5>
-                  
-                  <form id="editProfileForm">
+                <!-- Edit Profile Tab -->
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit" role="tabpanel">
+                  <!-- Profile Edit Form -->
+                  <form id="profileEditForm">
                     <div class="row mb-3">
-                      <label for="profileImageUpload" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                      <label for="profileImageEdit" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                       <div class="col-md-8 col-lg-9">
-                        <div class="d-flex align-items-center">
-                          <img src="https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff" alt="Profile" width="120" height="120" id="editProfileImage">
-                          <div class="ms-3">
-                            <div class="input-group">
-                              <input type="file" class="form-control" id="profileImageUpload" name="profileImageUpload" onchange="previewImage(this, 'editProfileImage')">
-                              <label class="input-group-text" for="profileImageUpload">Upload</label>
-                            </div>
-                            <div class="pt-2 d-flex gap-2">
-                              <button type="button" class="btn btn-danger btn-sm" title="Remove profile image"><i class="bi bi-trash"></i></button>
-                              <button type="button" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></button>
-                            </div>
+                        <div class="d-flex align-items-center mb-2">
+                          <img id="profileImageEditPreview" src="" alt="Profile" style="max-height: 100px;" class="rounded-circle me-2">
+                          <div>
+                            <input type="file" class="form-control mb-2" id="profileImageInput" accept="image/*" onchange="previewImage(this, 'profileImageEditPreview')">
+                            <button type="button" class="btn btn-outline-danger btn-sm">
+                              <i class="bi bi-trash"></i> Remove
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="editUsername" class="col-md-4 col-lg-3 col-form-label">Username</label>
+                      <label for="fullNameEdit" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="username" type="text" class="form-control" id="editUsername" value="johndoe">
+                        <input name="fullName" type="text" class="form-control" id="fullNameEdit" value="">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="editFullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                      <label for="usernameEdit" class="col-md-4 col-lg-3 col-form-label">Username</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="text" class="form-control" id="editFullName" value="John Doe">
+                        <input name="username" type="text" class="form-control" id="usernameEdit" value="">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="editEmail" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <label for="emailEdit" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="editEmail" value="john.doe@example.com">
+                        <input name="email" type="email" class="form-control" id="emailEdit" value="">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="editDescription" class="col-md-4 col-lg-3 col-form-label">About</label>
+                      <label for="roleEdit" class="col-md-4 col-lg-3 col-form-label">Role</label>
                       <div class="col-md-8 col-lg-9">
-                        <textarea name="description" class="form-control" id="editDescription" rows="6">John Doe is an experienced content creator with expertise in technology and SEO optimization. With over 10 years of experience in digital marketing, John has helped numerous companies improve their online presence and search engine rankings.</textarea>
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="editTwitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="twitter" type="text" class="form-control" id="editTwitter" value="https://twitter.com/johndoe">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="editFacebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="facebook" type="text" class="form-control" id="editFacebook" value="https://facebook.com/johndoe">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="editInstagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="instagram" type="text" class="form-control" id="editInstagram" value="https://instagram.com/johndoe">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="editLinkedin" class="col-md-4 col-lg-3 col-form-label">LinkedIn Profile</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="linkedin" type="text" class="form-control" id="editLinkedin" value="https://linkedin.com/in/johndoe">
-                      </div>
-                    </div>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                  </form>
-                </div>
-
-                <!-- Settings Tab - Only visible when viewing own profile -->
-                <div class="tab-pane fade profile-settings view-only-self" id="profile-settings" role="tabpanel" aria-labelledby="settings-tab">
-                  <h5 class="card-title">User Settings</h5>
-                  
-                  <form id="settingsForm">
-                    <div class="row mb-3">
-                      <label for="isActive" class="col-md-4 col-lg-3 col-form-label">Account Status</label>
-                      <div class="col-md-8 col-lg-9">
-                        <div class="form-check form-switch mt-2">
-                          <input class="form-check-input" type="checkbox" id="isActive" checked>
-                          <label class="form-check-label" for="isActive">Active</label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="emailNotifications" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
-                      <div class="col-md-8 col-lg-9">
-                        <div class="form-check mb-2">
-                          <input class="form-check-input" type="checkbox" id="emailComments" checked>
-                          <label class="form-check-label" for="emailComments">
-                            Comments on your posts
-                          </label>
-                        </div>
-                        <div class="form-check mb-2">
-                          <input class="form-check-input" type="checkbox" id="emailTranslations" checked>
-                          <label class="form-check-label" for="emailTranslations">
-                            New translations of your posts
-                          </label>
-                        </div>
-                        <div class="form-check mb-2">
-                          <input class="form-check-input" type="checkbox" id="emailNewsletter" checked>
-                          <label class="form-check-label" for="emailNewsletter">
-                            Blog newsletter
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="emailMarketing">
-                          <label class="form-check-label" for="emailMarketing">
-                            Marketing emails
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="language" class="col-md-4 col-lg-3 col-form-label">Interface Language</label>
-                      <div class="col-md-8 col-lg-9">
-                        <select name="language" id="language" class="form-select">
-                          <option value="en" selected>English</option>
-                          <option value="es">Spanish</option>
-                          <option value="fr">French</option>
-                          <option value="de">German</option>
-                          <option value="vi">Vietnamese</option>
+                        <select name="role" class="form-select" id="roleEdit">
+                          <option value="1">Administrator</option>
+                          <option value="2">Editor</option>
+                          <option value="3">Author</option>
+                          <option value="4">Contributor</option>
+                          <option value="5">Subscriber</option>
                         </select>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="timezone" class="col-md-4 col-lg-3 col-form-label">Timezone</label>
+                      <label for="statusEdit" class="col-md-4 col-lg-3 col-form-label">Status</label>
                       <div class="col-md-8 col-lg-9">
-                        <select name="timezone" id="timezone" class="form-select">
-                          <option value="UTC" selected>UTC</option>
-                          <option value="America/New_York">Eastern Time (US & Canada)</option>
-                          <option value="America/Chicago">Central Time (US & Canada)</option>
-                          <option value="America/Denver">Mountain Time (US & Canada)</option>
-                          <option value="America/Los_Angeles">Pacific Time (US & Canada)</option>
-                          <option value="Asia/Tokyo">Tokyo</option>
-                          <option value="Europe/London">London</option>
-                          <option value="Europe/Paris">Paris</option>
-                        </select>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="statusEdit">
+                          <label class="form-check-label" for="statusEdit">Account Active</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="descriptionEdit" class="col-md-4 col-lg-3 col-form-label">About</label>
+                      <div class="col-md-8 col-lg-9">
+                        <textarea name="description" class="form-control" id="descriptionEdit" rows="5"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="socialLinks" class="col-md-4 col-lg-3 col-form-label">Social Links</label>
+                      <div class="col-md-8 col-lg-9">
+                        <div class="input-group mb-2">
+                          <span class="input-group-text"><i class="bi bi-twitter"></i></span>
+                          <input type="text" class="form-control" id="twitterEdit" placeholder="Twitter URL" value="">
+                        </div>
+                        <div class="input-group mb-2">
+                          <span class="input-group-text"><i class="bi bi-facebook"></i></span>
+                          <input type="text" class="form-control" id="facebookEdit" placeholder="Facebook URL" value="">
+                        </div>
+                        <div class="input-group mb-2">
+                          <span class="input-group-text"><i class="bi bi-instagram"></i></span>
+                          <input type="text" class="form-control" id="instagramEdit" placeholder="Instagram URL" value="">
+                        </div>
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="bi bi-linkedin"></i></span>
+                          <input type="text" class="form-control" id="linkedinEdit" placeholder="LinkedIn URL" value="">
+                        </div>
                       </div>
                     </div>
 
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">Save Changes</button>
+                      <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
                     </div>
                   </form>
                 </div>
 
-                <!-- Change Password Tab - Only visible when viewing own profile -->
-                <div class="tab-pane fade profile-change-password view-only-self" id="profile-change-password" role="tabpanel" aria-labelledby="change-password-tab">
-                  <h5 class="card-title">Change Password</h5>
-                  
+                <!-- Posts Tab -->
+                <div class="tab-pane fade profile-posts pt-3" id="profile-posts" role="tabpanel">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">User's Posts</h5>
+                      <div class="table-responsive">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Title</th>
+                              <th scope="col">Category</th>
+                              <th scope="col">Language</th>
+                              <th scope="col">Date</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody id="userPostsList">
+                            <!-- Posts will be loaded here via JavaScript -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <div id="emptyPostsMessage" class="empty-state" style="display:none;">
+                        <i class="bi bi-journal-x"></i>
+                        <p>No posts found for this user.</p>
+                        <small>When the user creates posts, they will appear here.</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Change Password Tab -->
+                <div class="tab-pane fade pt-3" id="profile-change-password" role="tabpanel">
+                  <!-- Change Password Form -->
                   <form id="changePasswordForm">
                     <div class="row mb-3">
                       <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
@@ -374,131 +313,6 @@
                     </div>
                   </form>
                 </div>
-
-                <!-- Posts Tab - Visible to everyone -->
-                <div class="tab-pane fade profile-posts" id="profile-posts" role="tabpanel" aria-labelledby="posts-tab">
-                  <h5 class="card-title">Recent Posts</h5>
-                  
-                  <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Title</th>
-                          <th>Category</th>
-                          <th>Language</th>
-                          <th>Date</th>
-                          <th>Status</th>
-                          <th>Views</th>
-                        </tr>
-                      </thead>
-                      <tbody id="userPostsList">
-                        <tr>
-                          <td><a href="#" class="text-primary fw-bold">10 Tips for Better SEO</a></td>
-                          <td>Technology</td>
-                          <td>English</td>
-                          <td>2023-11-01</td>
-                          <td><span class="badge bg-success">Published</span></td>
-                          <td>1,286</td>
-                        </tr>
-                        <tr>
-                          <td><a href="#" class="text-primary fw-bold">Getting Started with Bootstrap</a></td>
-                          <td>Technology</td>
-                          <td>English</td>
-                          <td>2023-10-30</td>
-                          <td><span class="badge bg-success">Published</span></td>
-                          <td>958</td>
-                        </tr>
-                        <tr>
-                          <td><a href="#" class="text-primary fw-bold">Healthy Breakfast Ideas</a></td>
-                          <td>Food</td>
-                          <td>English</td>
-                          <td>2023-10-28</td>
-                          <td><span class="badge bg-success">Published</span></td>
-                          <td>2,154</td>
-                        </tr>
-                        <tr>
-                          <td><a href="#" class="text-primary fw-bold">Top Travel Destinations 2023</a></td>
-                          <td>Travel</td>
-                          <td>English</td>
-                          <td>2023-10-25</td>
-                          <td><span class="badge bg-success">Published</span></td>
-                          <td>1,893</td>
-                        </tr>
-                        <tr>
-                          <td><a href="#" class="text-primary fw-bold">Ultimate Guide to Remote Work</a></td>
-                          <td>Lifestyle</td>
-                          <td>English</td>
-                          <td>2023-10-23</td>
-                          <td><span class="badge bg-warning text-dark">Draft</span></td>
-                          <td>0</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  
-                  <!-- Pagination -->
-                  <nav>
-                    <ul class="pagination justify-content-center">
-                      <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                      </li>
-                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Recent Activity - Only shown in detailed view or own profile -->
-          <div class="card view-only-self">
-            <div class="card-body">
-              <h5 class="card-title">Recent Activity</h5>
-              
-              <div class="activity">
-                <div class="activity-item d-flex">
-                  <div class="activity-label">32 min</div>
-                  <i class="bi bi-circle-fill activity-badge text-success align-self-start"></i>
-                  <div class="activity-content">
-                    Published a new post <a href="#" class="fw-bold text-dark">10 Tips for Better SEO</a>
-                  </div>
-                </div>
-
-                <div class="activity-item d-flex">
-                  <div class="activity-label">56 min</div>
-                  <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
-                  <div class="activity-content">
-                    Edited <a href="#" class="fw-bold text-dark">Getting Started with Bootstrap</a>
-                  </div>
-                </div>
-
-                <div class="activity-item d-flex">
-                  <div class="activity-label">2 hrs</div>
-                  <i class="bi bi-circle-fill activity-badge text-warning align-self-start"></i>
-                  <div class="activity-content">
-                    Translated <a href="#" class="fw-bold text-dark">Healthy Breakfast Ideas</a> to French
-                  </div>
-                </div>
-
-                <div class="activity-item d-flex">
-                  <div class="activity-label">1 day</div>
-                  <i class="bi bi-circle-fill activity-badge text-info align-self-start"></i>
-                  <div class="activity-content">
-                    Approved comment by <strong>Sarah Williams</strong> on <a href="#" class="fw-bold text-dark">Top Travel Destinations 2023</a>
-                  </div>
-                </div>
-
-                <div class="activity-item d-flex">
-                  <div class="activity-label">2 days</div>
-                  <i class="bi bi-circle-fill activity-badge text-danger align-self-start"></i>
-                  <div class="activity-content">
-                    Deleted post <span class="fw-bold text-dark">Outdated Content</span>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -513,715 +327,421 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-   // This should replace the script section at the bottom of profile.html
-
-// Set up global state to track component loading
-const pageState = {
-  componentsLoaded: 0,
-  totalComponents: 0,
-  profileInitialized: false
-};
-
-// Component loader with improved tracking
-document.addEventListener('DOMContentLoaded', () => {
-  // Count the total number of components to load
-  const components = document.querySelectorAll('[data-inject]');
-  pageState.totalComponents = components.length;
-  
-  if (pageState.totalComponents === 0) {
-    // No components to load, initialize right away
-    initializeProfilePage();
-    return;
-  }
-  
-  // Load components
-  components.forEach(component => {
-    let path = component.getAttribute('data-inject');
-    
-    fetch(path)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Failed to load component: ${path}`);
-        }
-        return response.text();
-      })
-      .then(html => {
-        component.innerHTML = html;
-        pageState.componentsLoaded++;
+    // Component loader
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load components
+      const components = document.querySelectorAll('[data-inject]');
+      
+      components.forEach(component => {
+        let path = component.getAttribute('data-inject');
         
-        // Check if all components are loaded
-        if (pageState.componentsLoaded === pageState.totalComponents && !pageState.profileInitialized) {
-          pageState.profileInitialized = true;
-          // Allow a brief delay for the DOM to update
-          setTimeout(() => {
-            initializeProfilePage();
-          }, 100);
-        }
-      })
-      .catch(error => {
-        console.error('Error loading component:', path, error);
-        component.innerHTML = `<div class="alert alert-danger">Failed to load component: ${path}</div>`;
-        pageState.componentsLoaded++;
-        
-        // Continue even if there's an error
-        if (pageState.componentsLoaded === pageState.totalComponents && !pageState.profileInitialized) {
-          pageState.profileInitialized = true;
-          setTimeout(() => {
-            initializeProfilePage();
-          }, 100);
-        }
+        fetch(path)
+          .then(response => response.text())
+          .then(html => {
+            component.innerHTML = html;
+          })
+          .catch(error => {
+            console.error('Error loading component:', path, error);
+            component.innerHTML = `<div class="alert alert-danger">Failed to load component: ${path}</div>`;
+          });
       });
-  });
-  
-  // Fallback initialization if components don't load within 3 seconds
-  setTimeout(() => {
-    if (!pageState.profileInitialized) {
-      console.warn('Component loading timeout - initializing profile anyway');
-      pageState.profileInitialized = true;
-      initializeProfilePage();
-    }
-  }, 3000);
-});
-
-// Initialize profile page with improved stability
-function initializeProfilePage() {
-  try {
-    console.log('Initializing profile page...');
-    
-    // Get user ID from URL parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('id');
-    
-    // Check if viewing own profile or someone else's
-    const isOwnProfile = !userId || userId === 'self';
-    
-    // Set view mode
-    document.body.classList.toggle('viewing-own-profile', isOwnProfile);
-    
-    // Show/hide elements based on view mode
-    const selfOnlyElements = document.querySelectorAll('.view-only-self');
-    selfOnlyElements.forEach(element => {
-      element.style.display = isOwnProfile ? '' : 'none';
+      
+      // Initialize profile page
+      initProfilePage();
     });
-    
-    // If not viewing own profile, ensure email is hidden
-    if (!isOwnProfile) {
-      const emailRows = document.querySelectorAll('.row');
-      emailRows.forEach(row => {
-        if (row.textContent.includes('Email')) {
-          row.style.display = 'none';
-        }
-      });
-    }
-    
-    // Load user data
-    loadUserData(userId || 'self');
-    
-    // Set up form submission handlers
-    setupFormHandlers();
-    
-    console.log('Profile initialization complete');
-  } catch (error) {
-    console.error('Error initializing profile:', error);
-    showNotification('Error initializing profile. Please refresh the page and try again.', 'danger');
-  }
-}
 
-// Load user data with improved error handling
-function loadUserData(userId) {
-  try {
-    console.log('Loading data for user ID:', userId);
-    
-    // Define default user data
-    const defaultUserData = {
-      id: 1,
-      username: 'johndoe',
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      role: 'Administrator',
-      roleId: 1,
-      description: 'John Doe is an experienced content creator with expertise in technology and SEO optimization.',
-      isActive: true,
-      joinedDate: '2023-01-15',
-      lastLogin: '2023-11-05 14:30:24',
-      profileImage: 'https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff',
-      social: {
-        twitter: 'https://twitter.com/johndoe',
-        facebook: 'https://facebook.com/johndoe',
-        instagram: 'https://instagram.com/johndoe',
-        linkedin: 'https://linkedin.com/in/johndoe'
-      },
-      stats: {
-        posts: 42,
-        comments: 156,
-        translations: 24,
-        views: 7392
+    // Global variables
+    let isCurrentUser = true;
+    let userData = null;
+
+    // Initialize profile page based on URL parameters
+    function initProfilePage() {
+      // Get user ID from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('id');
+      
+      // If userId is provided in URL, we're viewing someone else's profile
+      if (userId) {
+        isCurrentUser = false;
+        loadUserProfile(userId);
+      } else {
+        // No ID specified, load current user (admin) profile
+        isCurrentUser = true;
+        loadCurrentUserProfile();
       }
-    };
-    
-    // Get user data based on ID
-    let userData;
-    
-    if (userId === 'self' || userId === '1') {
+      
+      // Set up event listeners
+      setupEventListeners();
+    }
+
+    // Load the current user's profile (admin)
+    function loadCurrentUserProfile() {
+      // In a real application, this would be an API call
+      // For demo purposes, we're using mock data
       userData = {
         id: 1,
-        username: 'johndoe',
-        fullName: 'John Doe',
-        email: 'john.doe@example.com',
+        username: 'admin',
+        fullName: 'Admin User',
+        email: 'admin@example.com',
+        role_id: 1,
         role: 'Administrator',
-        roleId: 1,
-        description: 'John Doe is an experienced content creator with expertise in technology and SEO optimization. With over 10 years of experience in digital marketing, John has helped numerous companies improve their online presence and search engine rankings.',
-        isActive: true,
-        joinedDate: '2023-01-15',
-        lastLogin: '2023-11-05 14:30:24',
-        profileImage: 'https://ui-avatars.com/api/?name=J+D&background=4154f1&color=fff',
-        social: {
-          twitter: 'https://twitter.com/johndoe',
-          facebook: 'https://facebook.com/johndoe',
-          instagram: 'https://instagram.com/johndoe',
-          linkedin: 'https://linkedin.com/in/johndoe'
-        },
-        stats: {
-          posts: 42,
-          comments: 156,
-          translations: 24,
-          views: 7392
-        }
+        description: 'System administrator responsible for managing the blog platform, users, and content. Has access to all features and functionality.',
+        created_at: '2023-01-01T00:00:00',
+        updated_at: '2023-04-15T10:30:00',
+        is_active: true,
+        posts_count: 42,
+        profile_image: 'https://ui-avatars.com/api/?name=A+D&background=4154f1&color=fff'
       };
-    } else if (userId === '2') {
-      userData = {
-        id: 2,
-        username: 'janesmith',
-        fullName: 'Jane Smith',
-        email: 'jane.smith@example.com',
-        role: 'Editor',
-        roleId: 2,
-        description: 'Jane Smith is a content editor with a background in journalism. She specializes in technology and lifestyle content.',
-        isActive: true,
-        joinedDate: '2023-02-20',
-        lastLogin: '2023-11-04 09:15:42',
-        profileImage: 'https://ui-avatars.com/api/?name=J+S&background=4154f1&color=fff',
-        social: {
-          twitter: 'https://twitter.com/janesmith',
-          facebook: 'https://facebook.com/janesmith',
-          instagram: 'https://instagram.com/janesmith',
-          linkedin: 'https://linkedin.com/in/janesmith'
-        },
-        stats: {
-          posts: 34,
-          comments: 89,
-          translations: 15,
-          views: 4586
-        }
-      };
-    } else if (userId === '3') {
-      userData = {
-        id: 3,
-        username: 'mikejohnson',
-        fullName: 'Mike Johnson',
-        email: 'mike.johnson@example.com',
-        role: 'Author',
-        roleId: 3,
-        description: 'Mike Johnson writes about travel destinations and food experiences from around the world.',
-        isActive: true,
-        joinedDate: '2023-03-10',
-        lastLogin: '2023-11-03 16:22:10',
-        profileImage: 'https://ui-avatars.com/api/?name=M+J&background=4154f1&color=fff',
-        social: {
-          twitter: 'https://twitter.com/mikejohnson',
-          facebook: 'https://facebook.com/mikejohnson',
-          instagram: 'https://instagram.com/mikejohnson',
-          linkedin: 'https://linkedin.com/in/mikejohnson'
-        },
-        stats: {
-          posts: 27,
-          comments: 45,
-          translations: 8,
-          views: 3125
-        }
-      };
-    } else {
-      // Use default data if user not found
-      console.warn('User not found, using default data');
-      userData = defaultUserData;
+      
+      updateUIWithUserData(userData);
+      configureUIForCurrentUser();
     }
-    
-    // Update the UI with the user data
-    updateProfileUI(userData);
-    
-    // If own profile, also populate the form fields
-    if (userId === 'self' || userId === '1') {
-      populateFormFields(userData);
+
+    // Load a specific user's profile
+    function loadUserProfile(userId) {
+      // In a real application, this would be an API call
+      // For demo purposes, we're using mock data
+      // Simulating different users based on ID
+      const mockUsers = {
+        '2': {
+          id: 2,
+          username: 'janesmith',
+          fullName: 'Jane Smith',
+          email: 'jane.smith@example.com',
+          role_id: 2,
+          role: 'Editor',
+          description: 'Content editor with expertise in technology and lifestyle topics. Manages content quality and editorial standards.',
+          created_at: '2023-02-20T00:00:00',
+          updated_at: '2023-05-10T14:45:00',
+          is_active: true,
+          posts_count: 34,
+          profile_image: 'https://ui-avatars.com/api/?name=J+S&background=4154f1&color=fff'
+        },
+        '3': {
+          id: 3,
+          username: 'mikejohnson',
+          fullName: 'Mike Johnson',
+          email: 'mike.johnson@example.com',
+          role_id: 3,
+          role: 'Author',
+          description: 'Regular contributor focusing on food and travel content. Creates engaging articles and recipes.',
+          created_at: '2023-03-10T00:00:00',
+          updated_at: '2023-06-05T09:20:00',
+          is_active: true,
+          posts_count: 27,
+          profile_image: 'https://ui-avatars.com/api/?name=M+J&background=4154f1&color=fff'
+        }
+      };
+      
+      userData = mockUsers[userId] || {
+        id: parseInt(userId),
+        username: 'user' + userId,
+        fullName: 'User ' + userId,
+        email: 'user' + userId + '@example.com',
+        role_id: 5,
+        role: 'Subscriber',
+        description: 'User account',
+        created_at: '2023-01-01T00:00:00',
+        updated_at: '2023-01-01T00:00:00',
+        is_active: true,
+        posts_count: 0,
+        profile_image: `https://ui-avatars.com/api/?name=U+${userId}&background=4154f1&color=fff`
+      };
+      
+      updateUIWithUserData(userData);
+      configureUIForOtherUser();
     }
-    
+
+    // Update UI elements with user data
+    function updateUIWithUserData(user) {
+      // Update page title
+      document.title = `${user.fullName} Profile - Blog Admin`;
+      
+      // Profile card
+      document.getElementById('profileImage').src = user.profile_image;
+      document.getElementById('profileName').textContent = user.fullName;
+      document.getElementById('profileRole').textContent = user.role;
+      
+      // Statistics
+      document.getElementById('totalPosts').textContent = user.posts_count;
+      document.getElementById('accountStatus').textContent = user.is_active ? 'Active' : 'Inactive';
+      document.getElementById('accountStatus').className = user.is_active ? 'stat-card-value text-success' : 'stat-card-value text-danger';
+      document.getElementById('joinedDate').textContent = formatDate(user.created_at);
+      
+      // Overview tab
+      document.getElementById('userDescription').textContent = user.description;
+      document.getElementById('fullName').textContent = user.fullName;
+      document.getElementById('username').textContent = user.username;
+      document.getElementById('email').textContent = user.email;
+      document.getElementById('role').textContent = user.role;
+      document.getElementById('status').textContent = user.is_active ? 'Active' : 'Inactive';
+      document.getElementById('status').className = user.is_active ? 'text-success' : 'text-danger';
+      document.getElementById('joined').textContent = formatDate(user.created_at);
+      document.getElementById('lastUpdated').textContent = formatDate(user.updated_at);
+      
+      // Edit form
+      document.getElementById('profileImageEditPreview').src = user.profile_image;
+      document.getElementById('fullNameEdit').value = user.fullName;
+      document.getElementById('usernameEdit').value = user.username;
+      document.getElementById('emailEdit').value = user.email;
+      document.getElementById('roleEdit').value = user.role_id;
+      document.getElementById('statusEdit').checked = user.is_active;
+      document.getElementById('descriptionEdit').value = user.description;
+      
+      // Load user posts
+      loadUserPosts(user.id);
+    }
+
+    // Configure UI for viewing current user's profile (admin)
+    function configureUIForCurrentUser() {
+      // Show edit button and hide delete button
+      document.getElementById('editProfileBtn').style.display = 'block';
+      document.getElementById('deleteUserBtn').style.display = 'none';
+      
+      // Enable all tabs
+      document.querySelectorAll('.nav-tabs .nav-link').forEach(tab => {
+        tab.classList.remove('disabled-tab');
+        tab.removeAttribute('disabled');
+      });
+    }
+
+    // Configure UI for viewing another user's profile
+    function configureUIForOtherUser() {
+      // Hide edit button and show delete button
+      document.getElementById('editProfileBtn').style.display = 'none';
+      document.getElementById('deleteUserBtn').style.display = 'block';
+      
+      // Disable edit and change password tabs
+      document.getElementById('edit-tab').classList.add('disabled-tab');
+      document.getElementById('edit-tab').setAttribute('disabled', 'true');
+      document.getElementById('change-password-tab').classList.add('disabled-tab');
+      document.getElementById('change-password-tab').setAttribute('disabled', 'true');
+      
+      // Ensure overview tab is active
+      document.getElementById('overview-tab').click();
+    }
+
     // Load user posts
-    loadUserPosts(userId);
-    
-    console.log('User data loaded successfully');
-    
-  } catch (error) {
-    console.error('Error loading user data:', error);
-    showNotification('Error loading profile data. Please refresh the page and try again.', 'danger');
-    
-    // Apply default data as fallback
-    try {
-      updateProfileUI(defaultUserData);
-      if (userId === 'self' || userId === '1') {
-        populateFormFields(defaultUserData);
-      }
-      loadUserPosts(userId);
-    } catch (e) {
-      console.error('Error applying fallback data:', e);
-    }
-  }
-}
-
-// Update the profile UI with improved element checks
-function updateProfileUI(userData) {
-  try {
-    // Helper function to safely update an element
-    function safelyUpdateElement(id, updateFn) {
-      const element = document.getElementById(id);
-      if (element) {
-        updateFn(element);
-      }
-    }
-
-    // Update profile card
-    safelyUpdateElement('profileImage', el => el.src = userData.profileImage);
-    safelyUpdateElement('profileName', el => el.textContent = userData.fullName);
-    safelyUpdateElement('profileRole', el => el.textContent = userData.role);
-    
-    // Update profile overview
-    safelyUpdateElement('profileDescription', el => el.textContent = userData.description);
-    safelyUpdateElement('infoUsername', el => el.textContent = userData.username);
-    safelyUpdateElement('infoFullName', el => el.textContent = userData.fullName);
-    safelyUpdateElement('infoEmail', el => el.textContent = userData.email);
-    safelyUpdateElement('infoRole', el => el.textContent = userData.role);
-    
-    // Update status badge
-    safelyUpdateElement('infoStatus', el => {
-      const statusBadge = el.querySelector('span') || document.createElement('span');
-      statusBadge.className = `badge ${userData.isActive ? 'bg-success' : 'bg-danger'}`;
-      statusBadge.textContent = userData.isActive ? 'Active' : 'Inactive';
-      el.innerHTML = '';
-      el.appendChild(statusBadge);
-    });
-    
-    // Update dates
-    safelyUpdateElement('infoJoinedDate', el => el.textContent = userData.joinedDate);
-    safelyUpdateElement('infoLastLogin', el => el.textContent = userData.lastLogin);
-    
-    // Update statistics
-    safelyUpdateElement('postCount', el => el.textContent = userData.stats.posts);
-    safelyUpdateElement('commentCount', el => el.textContent = userData.stats.comments);
-    safelyUpdateElement('translationCount', el => el.textContent = userData.stats.translations);
-    safelyUpdateElement('viewCount', el => el.textContent = userData.stats.views.toLocaleString());
-    
-    // Update social links
-    updateSocialLinks(userData.social);
-    
-    console.log('Profile UI updated successfully');
-  } catch (error) {
-    console.error('Error updating profile UI:', error);
-  }
-}
-
-// Update social links with better error handling
-function updateSocialLinks(social) {
-  try {
-    const links = document.querySelectorAll('.social-links a');
-    if (links.length >= 4) {
-      links[0].href = social.twitter || '#';
-      links[1].href = social.facebook || '#';
-      links[2].href = social.instagram || '#';
-      links[3].href = social.linkedin || '#';
-    }
-  } catch (error) {
-    console.error('Error updating social links:', error);
-  }
-}
-
-// Populate form fields with better element checks
-function populateFormFields(userData) {
-  try {
-    // Helper function to safely update a form field
-    function safelyUpdateFormField(id, value) {
-      const field = document.getElementById(id);
-      if (field) {
-        field.value = value;
-      }
-    }
-    
-    // Helper function to safely update a checkbox
-    function safelyUpdateCheckbox(id, checked) {
-      const checkbox = document.getElementById(id);
-      if (checkbox) {
-        checkbox.checked = checked;
-      }
-    }
-    
-    // Helper function to safely update an image
-    function safelyUpdateImage(id, src) {
-      const image = document.getElementById(id);
-      if (image) {
-        image.src = src;
-      }
-    }
-    
-    // Profile edit form
-    safelyUpdateImage('editProfileImage', userData.profileImage);
-    safelyUpdateFormField('editUsername', userData.username);
-    safelyUpdateFormField('editFullName', userData.fullName);
-    safelyUpdateFormField('editEmail', userData.email);
-    safelyUpdateFormField('editDescription', userData.description);
-    
-    // Social media inputs
-    safelyUpdateFormField('editTwitter', userData.social.twitter || '');
-    safelyUpdateFormField('editFacebook', userData.social.facebook || '');
-    safelyUpdateFormField('editInstagram', userData.social.instagram || '');
-    safelyUpdateFormField('editLinkedin', userData.social.linkedin || '');
-    
-    // Settings form
-    safelyUpdateCheckbox('isActive', userData.isActive);
-    
-    console.log('Form fields populated successfully');
-  } catch (error) {
-    console.error('Error populating form fields:', error);
-  }
-}
-
-// Load user posts with better error handling
-function loadUserPosts(userId) {
-  try {
-    console.log('Loading posts for user ID:', userId);
-    
-    // Default posts data for all users
-    const postsData = [
-      {
-        title: '10 Tips for Better SEO',
-        category: 'Technology',
-        language: 'English',
-        date: '2023-11-01',
-        status: 'Published',
-        views: 1286
-      },
-      {
-        title: 'Getting Started with Bootstrap',
-        category: 'Technology',
-        language: 'English',
-        date: '2023-10-30',
-        status: 'Published',
-        views: 958
-      },
-      {
-        title: 'Healthy Breakfast Ideas',
-        category: 'Food',
-        language: 'English',
-        date: '2023-10-28',
-        status: 'Published',
-        views: 2154
-      },
-      {
-        title: 'Top Travel Destinations 2023',
-        category: 'Travel',
-        language: 'English',
-        date: '2023-10-25',
-        status: 'Published',
-        views: 1893
-      },
-      {
-        title: 'Ultimate Guide to Remote Work',
-        category: 'Lifestyle',
-        language: 'English',
-        date: '2023-10-23',
-        status: 'Draft',
-        views: 0
-      }
-    ];
-    
-    // Update the UI with the posts data
-    updatePostsTable(postsData);
-    
-    console.log('User posts loaded successfully');
-  } catch (error) {
-    console.error('Error loading user posts:', error);
-  }
-}
-
-// Update posts table with better error handling
-function updatePostsTable(postsData) {
-  try {
-    const tableBody = document.getElementById('userPostsList');
-    if (!tableBody) {
-      console.warn('Posts table body element not found');
-      return;
-    }
-    
-    // Clear existing rows
-    tableBody.innerHTML = '';
-    
-    // Add new rows
-    postsData.forEach(post => {
-      const row = document.createElement('tr');
+    function loadUserPosts(userId) {
+      // In a real application, this would be an API call
+      // For demo purposes, we're using mock data
+      const mockPosts = {
+        '1': [
+          { id: 1, title: '10 Tips for Better SEO', category: 'Technology', language: 'English', date: '2023-11-01', status: 'Published' },
+          { id: 5, title: 'Ultimate Guide to Remote Work', category: 'Lifestyle', language: 'English', date: '2023-10-23', status: 'Draft' },
+          { id: 6, title: '10 conseils pour un meilleur référencement', category: 'Technology', language: 'French', date: '2023-10-20', status: 'Published' }
+        ],
+        '2': [
+          { id: 2, title: 'Getting Started with Bootstrap', category: 'Technology', language: 'English', date: '2023-10-30', status: 'Published' }
+        ],
+        '3': [
+          { id: 3, title: 'Healthy Breakfast Ideas', category: 'Food', language: 'English', date: '2023-10-28', status: 'Published' }
+        ]
+      };
       
-      row.innerHTML = `
-        <td><a href="#" class="text-primary fw-bold">${post.title}</a></td>
-        <td>${post.category}</td>
-        <td>${post.language}</td>
-        <td>${post.date}</td>
-        <td><span class="badge ${post.status === 'Published' ? 'bg-success' : 'bg-warning text-dark'}">${post.status}</span></td>
-        <td>${post.views.toLocaleString()}</td>
-      `;
+      const posts = mockPosts[userId] || [];
+      const tableBody = document.getElementById('userPostsList');
+      const emptyMessage = document.getElementById('emptyPostsMessage');
       
-      tableBody.appendChild(row);
-    });
-    
-    console.log('Posts table updated successfully');
-  } catch (error) {
-    console.error('Error updating posts table:', error);
-  }
-}
+      if (posts.length === 0) {
+        tableBody.innerHTML = '';
+        emptyMessage.style.display = 'block';
+        return;
+      }
+      
+      emptyMessage.style.display = 'none';
+      tableBody.innerHTML = '';
+      
+      posts.forEach((post, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${post.title}</td>
+          <td>${post.category}</td>
+          <td>${post.language}</td>
+          <td>${post.date}</td>
+          <td><span class="badge ${post.status === 'Published' ? 'bg-success' : 'bg-warning text-dark'}">${post.status}</span></td>
+          <td>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-sm btn-primary" title="Edit Post">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-info" title="View Post">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-danger" onclick="confirmDeletePost(event, ${post.id})" title="Delete Post">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
 
-// Set up form submission handlers with better error handling
-function setupFormHandlers() {
-  try {
-    console.log('Setting up form handlers...');
-    
-    // Edit profile form
-    const editProfileForm = document.getElementById('editProfileForm');
-    if (editProfileForm) {
-      editProfileForm.addEventListener('submit', function(e) {
+    // Setup event listeners
+    function setupEventListeners() {
+      // Edit profile button
+      document.getElementById('editProfileBtn').addEventListener('click', () => {
+        document.getElementById('edit-tab').click();
+        document.getElementById('viewModeIndicator').style.display = 'none';
+        document.getElementById('editModeIndicator').style.display = 'inline-block';
+      });
+      
+      // Cancel edit button
+      document.getElementById('cancelEditBtn').addEventListener('click', () => {
+        document.getElementById('overview-tab').click();
+        document.getElementById('viewModeIndicator').style.display = 'inline-block';
+        document.getElementById('editModeIndicator').style.display = 'none';
+      });
+      
+      // Delete user button
+      document.getElementById('deleteUserBtn').addEventListener('click', () => {
+        confirmDeleteUser(userData.id, userData.fullName);
+      });
+      
+      // Tab change events
+      document.querySelectorAll('.nav-tabs .nav-link').forEach(tab => {
+        tab.addEventListener('shown.bs.tab', (e) => {
+          if (e.target.id === 'edit-tab') {
+            document.getElementById('viewModeIndicator').style.display = 'none';
+            document.getElementById('editModeIndicator').style.display = 'inline-block';
+          } else {
+            document.getElementById('viewModeIndicator').style.display = 'inline-block';
+            document.getElementById('editModeIndicator').style.display = 'none';
+          }
+        });
+      });
+      
+      // Form submissions
+      document.getElementById('profileEditForm').addEventListener('submit', function(e) {
         e.preventDefault();
         saveProfile();
       });
-    }
-    
-    // Settings form
-    const settingsForm = document.getElementById('settingsForm');
-    if (settingsForm) {
-      settingsForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveSettings();
-      });
-    }
-    
-    // Change password form
-    const passwordForm = document.getElementById('changePasswordForm');
-    if (passwordForm) {
-      passwordForm.addEventListener('submit', function(e) {
+      
+      document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
         e.preventDefault();
         changePassword();
       });
     }
-    
-    console.log('Form handlers set up successfully');
-  } catch (error) {
-    console.error('Error setting up form handlers:', error);
-  }
-}
 
-// Save profile changes with better error handling
-function saveProfile() {
-  try {
-    console.log('Saving profile...');
-    
-    // Get form data
-    const formData = {
-      username: document.getElementById('editUsername')?.value || '',
-      fullName: document.getElementById('editFullName')?.value || '',
-      email: document.getElementById('editEmail')?.value || '',
-      description: document.getElementById('editDescription')?.value || '',
-      social: {
-        twitter: document.getElementById('editTwitter')?.value || '',
-        facebook: document.getElementById('editFacebook')?.value || '',
-        instagram: document.getElementById('editInstagram')?.value || '',
-        linkedin: document.getElementById('editLinkedin')?.value || ''
-      }
-    };
-    
-    // In a real app, you would make an API call to save the profile
-    console.log('Profile data to save:', formData);
-    
-    // Show success message
-    showNotification('Profile updated successfully!', 'success');
-    
-    // Update the profile view to reflect changes
-    const userData = {
-      id: 1,
-      username: formData.username,
-      fullName: formData.fullName,
-      email: formData.email,
-      role: 'Administrator',
-      roleId: 1,
-      description: formData.description,
-      isActive: true,
-      joinedDate: '2023-01-15',
-      lastLogin: '2023-11-05 14:30:24',
-      profileImage: document.getElementById('editProfileImage')?.src || '',
-      social: formData.social,
-      stats: {
-        posts: 42,
-        comments: 156,
-        translations: 24,
-        views: 7392
-      }
-    };
-    
-    updateProfileUI(userData);
-    
-    console.log('Profile saved successfully');
-  } catch (error) {
-    console.error('Error saving profile:', error);
-    showNotification('Error saving profile. Please try again.', 'danger');
-  }
-}
-
-// Save settings with better error handling
-function saveSettings() {
-  try {
-    console.log('Saving settings...');
-    
-    // Get form data
-    const formData = {
-      isActive: document.getElementById('isActive')?.checked || false,
-      emailNotifications: {
-        comments: document.getElementById('emailComments')?.checked || false,
-        translations: document.getElementById('emailTranslations')?.checked || false,
-        newsletter: document.getElementById('emailNewsletter')?.checked || false,
-        marketing: document.getElementById('emailMarketing')?.checked || false
-      },
-      language: document.getElementById('language')?.value || 'en',
-      timezone: document.getElementById('timezone')?.value || 'UTC'
-    };
-    
-    // In a real app, you would make an API call to save the settings
-    console.log('Settings data to save:', formData);
-    
-    // Show success message
-    showNotification('Settings saved successfully!', 'success');
-    
-    console.log('Settings saved successfully');
-  } catch (error) {
-    console.error('Error saving settings:', error);
-    showNotification('Error saving settings. Please try again.', 'danger');
-  }
-}
-
-// Change password with better error handling
-function changePassword() {
-  try {
-    console.log('Changing password...');
-    
-    // Get form data
-    const currentPassword = document.getElementById('currentPassword')?.value || '';
-    const newPassword = document.getElementById('newPassword')?.value || '';
-    const confirmPassword = document.getElementById('confirmPassword')?.value || '';
-    
-    // Validation
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      throw new Error('All password fields are required');
-    }
-    
-    if (newPassword !== confirmPassword) {
-      throw new Error('New password and confirmation do not match');
-    }
-    
-    // In a real app, you would make an API call to change the password
-    console.log('Password change requested');
-    
-    // Clear form
-    if (document.getElementById('currentPassword')) document.getElementById('currentPassword').value = '';
-    if (document.getElementById('newPassword')) document.getElementById('newPassword').value = '';
-    if (document.getElementById('confirmPassword')) document.getElementById('confirmPassword').value = '';
-    
-    // Show success message
-    showNotification('Password changed successfully!', 'success');
-    
-    console.log('Password changed successfully');
-  } catch (error) {
-    console.error('Error changing password:', error);
-    showNotification(error.message || 'Error changing password. Please try again.', 'danger');
-  }
-}
-
-// Image preview function with better error handling
-function previewImage(input, previewId) {
-  try {
-    const preview = document.getElementById(previewId);
-    if (!preview) {
-      console.warn('Preview element not found:', previewId);
-      return;
-    }
-
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        preview.src = e.target.result;
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
-  } catch (error) {
-    console.error('Error previewing image:', error);
-  }
-}
-
-// Show notification with better error handling
-function showNotification(message, type = 'success') {
-  try {
-    console.log(`Notification (${type}):`, message);
-    
-    // Create toast container if it doesn't exist
-    let toastContainer = document.querySelector('.toast-container');
-    if (!toastContainer) {
-      toastContainer = document.createElement('div');
-      toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
-      toastContainer.style.zIndex = '9999';
-      document.body.appendChild(toastContainer);
-    }
-    
-    // Create toast
-    const toast = document.createElement('div');
-    toast.className = `toast align-items-center text-white bg-${type} border-0`;
-    toast.setAttribute('role', 'alert');
-    toast.setAttribute('aria-live', 'assertive');
-    toast.setAttribute('aria-atomic', 'true');
-    
-    toast.innerHTML = `
-      <div class="d-flex">
-        <div class="toast-body">
-          ${message}
-        </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    `;
-    
-    toastContainer.appendChild(toast);
-    
-    // Initialize Bootstrap toast
-    if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
-      const bsToast = new bootstrap.Toast(toast, {
-        autohide: true,
-        delay: 5000
-      });
+    // Format date for display
+    function formatDate(dateString) {
+      if (!dateString) return '-';
       
-      bsToast.show();
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return dateString;
       
-      // Remove toast after hidden
-      toast.addEventListener('hidden.bs.toast', () => {
-        toast.remove();
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
       });
-    } else {
-      // Fallback if Bootstrap is not available
-      toast.style.display = 'block';
-      setTimeout(() => {
-        toast.remove();
-      }, 5000);
     }
-  } catch (error) {
-    console.error('Error showing notification:', error);
-    // Fallback to console if toast fails
-    console.log(`${type.toUpperCase()}: ${message}`);
-  }
-}
+
+    // Save profile changes
+    function saveProfile() {
+      // In a real application, this would be an API call
+      // For demo purposes, we're just updating the UI
+      
+      // Update user data
+      userData.fullName = document.getElementById('fullNameEdit').value;
+      userData.username = document.getElementById('usernameEdit').value;
+      userData.email = document.getElementById('emailEdit').value;
+      userData.role_id = document.getElementById('roleEdit').value;
+      userData.role = document.getElementById('roleEdit').options[document.getElementById('roleEdit').selectedIndex].text;
+      userData.is_active = document.getElementById('statusEdit').checked;
+      userData.description = document.getElementById('descriptionEdit').value;
+      userData.updated_at = new Date().toISOString();
+      
+      // Update UI with new data
+      updateUIWithUserData(userData);
+      
+      // Switch back to overview tab
+      document.getElementById('overview-tab').click();
+      
+      // Show success message
+      alert('Profile updated successfully!');
+    }
+
+    // Change password
+    function changePassword() {
+      // In a real application, this would be an API call
+      // For demo purposes, we're just showing a success message
+      
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      // Simple validation
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        alert('Please fill in all password fields.');
+        return;
+      }
+      
+      if (newPassword !== confirmPassword) {
+        alert('New password and confirmation do not match.');
+        return;
+      }
+      
+      // Reset form
+      document.getElementById('changePasswordForm').reset();
+      
+      // Show success message
+      alert('Password changed successfully!');
+    }
+
+    // Confirm delete user
+    function confirmDeleteUser(userId, userName) {
+      if (confirm(`Are you sure you want to delete the user "${userName}"? This action cannot be undone.`)) {
+        // In a real application, this would be an API call
+        // For demo purposes, we're just redirecting
+        alert(`User "${userName}" has been deleted successfully.`);
+        window.location.href = 'index.html'; // Redirect to users list
+      }
+    }
+
+    // Confirm delete post
+    function confirmDeletePost(event, postId) {
+      if (confirm(`Are you sure you want to delete this post? This action cannot be undone.`)) {
+        // In a real application, this would be an API call
+        // For demo purposes, we're just removing the row
+        event.target.closest('tr').remove();
+        
+        // Update posts count
+        userData.posts_count--;
+        document.getElementById('totalPosts').textContent = userData.posts_count;
+        
+        // Show empty message if no posts left
+        if (userData.posts_count === 0) {
+          document.getElementById('emptyPostsMessage').style.display = 'block';
+        }
+        
+        // Show success message
+        alert('Post deleted successfully!');
+      }
+    }
+
+    // Preview image function
+    function previewImage(input, previewId) {
+      const preview = document.getElementById(previewId);
+      if (!preview) return;
+    
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+          
+          // Also update profile image in real-time
+          userData.profile_image = e.target.result;
+          document.getElementById('profileImage').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
   </script>
+</body>
+</html>
