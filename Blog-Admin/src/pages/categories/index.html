@@ -75,7 +75,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr data-category-id="1">
                       <td>
                         <input type="checkbox" class="form-check-input">
                       </td>
@@ -89,16 +89,16 @@
                       <td>32</td>
                       <td>
                         <div class="btn-group" role="group">
-                          <a href="./edit.html" class="btn btn-sm btn-primary">
+                          <button type="button" class="btn btn-sm btn-primary edit-category">
                             <i class="bi bi-pencil"></i>
-                          </a>
+                          </button>
                           <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(event)">
                             <i class="bi bi-trash"></i>
                           </button>
                         </div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr data-category-id="2">
                       <td>
                         <input type="checkbox" class="form-check-input">
                       </td>
@@ -111,16 +111,16 @@
                       <td>28</td>
                       <td>
                         <div class="btn-group" role="group">
-                          <a href="./edit.html" class="btn btn-sm btn-primary">
+                          <button type="button" class="btn btn-sm btn-primary edit-category">
                             <i class="bi bi-pencil"></i>
-                          </a>
+                          </button>
                           <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(event)">
                             <i class="bi bi-trash"></i>
                           </button>
                         </div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr data-category-id="3">
                       <td>
                         <input type="checkbox" class="form-check-input">
                       </td>
@@ -133,16 +133,16 @@
                       <td>25</td>
                       <td>
                         <div class="btn-group" role="group">
-                          <a href="./edit.html" class="btn btn-sm btn-primary">
+                          <button type="button" class="btn btn-sm btn-primary edit-category">
                             <i class="bi bi-pencil"></i>
-                          </a>
+                          </button>
                           <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(event)">
                             <i class="bi bi-trash"></i>
                           </button>
                         </div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr data-category-id="4">
                       <td>
                         <input type="checkbox" class="form-check-input">
                       </td>
@@ -154,16 +154,16 @@
                       <td>18</td>
                       <td>
                         <div class="btn-group" role="group">
-                          <a href="./edit.html" class="btn btn-sm btn-primary">
+                          <button type="button" class="btn btn-sm btn-primary edit-category">
                             <i class="bi bi-pencil"></i>
-                          </a>
+                          </button>
                           <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(event)">
                             <i class="bi bi-trash"></i>
                           </button>
                         </div>
                       </td>
                     </tr>
-                    <tr>
+                    <tr data-category-id="5">
                       <td>
                         <input type="checkbox" class="form-check-input">
                       </td>
@@ -176,9 +176,9 @@
                       <td>14</td>
                       <td>
                         <div class="btn-group" role="group">
-                          <a href="./edit.html" class="btn btn-sm btn-primary">
+                          <button type="button" class="btn btn-sm btn-primary edit-category">
                             <i class="bi bi-pencil"></i>
-                          </a>
+                          </button>
                           <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(event)">
                             <i class="bi bi-trash"></i>
                           </button>
@@ -292,6 +292,30 @@
             component.innerHTML = `<div class="alert alert-danger">Failed to load component: ${path}</div>`;
           });
       });
+      
+      // Set up event listeners for edit buttons
+      function setupEditButtons() {
+        const editButtons = document.querySelectorAll('.edit-category');
+        
+        editButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            // Get the category ID from the parent row
+            const row = this.closest('tr');
+            const categoryId = row.dataset.categoryId;
+            
+            // Navigate to edit page with the category ID
+            window.location.href = `./edit.html?id=${categoryId}`;
+          });
+        });
+      }
+      
+      // Wait for components to load before setting up event listeners
+      const componentsLoaded = setInterval(() => {
+        if (document.querySelector('.table')) {
+          setupEditButtons();
+          clearInterval(componentsLoaded);
+        }
+      }, 300);
     });
     
     const confirmDelete = (event, message = 'Are you sure you want to delete this item?') => {
